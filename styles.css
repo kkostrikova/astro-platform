@@ -97,3 +97,48 @@ body{background:
   .zodiac-symbols span{font-size:18px;transform:rotate(var(--a)) translateY(-137px) rotate(calc(-1*var(--a)))}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
+
+
+/* ===== Mobile polish after visual review ===== */
+.zodiac-symbols{display:none!important}
+.avatar-photo{display:none!important}
+.profile-pill:before{
+  content:"V";width:32px;height:32px;border-radius:50%;
+  display:grid;place-items:center;border:1px solid rgba(221,184,117,.48);
+  color:#dcb873;font:600 16px Georgia,serif;background:#090c17
+}
+.about-photo{display:none!important}
+.about-photo-wrap{min-height:260px}
+.about-photo-wrap:after{
+  content:"VA";width:190px;height:190px;border-radius:50%;
+  display:grid;place-items:center;position:relative;z-index:2;
+  border:1px solid rgba(205,157,88,.35);
+  background:radial-gradient(circle at 40% 30%,rgba(74,43,98,.28),rgba(5,8,16,.96) 65%);
+  color:#d9b46e;font:400 54px Georgia,serif
+}
+.about-orbit{animation:none!important}
+.about-orbit:before,.about-orbit:after{display:none!important}
+@media(max-width:700px){
+  .hero-visual{display:none!important}
+  .hero{display:block!important;padding:46px 0 28px!important}
+  .hero-copy{padding:0!important}
+  .hero h1{font-size:46px!important;line-height:1.02!important;margin-bottom:22px!important}
+  .hero-copy>p{font-size:15px!important;line-height:1.7!important}
+  .hero-actions{display:grid!important;grid-template-columns:1fr!important}
+  .hero-actions .btn{width:100%!important}
+  .trust-line{margin-top:16px!important}
+  .feature-grid{grid-template-columns:1fr 1fr!important;gap:8px!important;padding-bottom:34px!important}
+  .feature-card{min-height:190px!important;padding:18px!important;border-radius:14px!important}
+  .feature-card h3{font-size:20px!important;margin:34px 0 8px!important}
+  .feature-card p{font-size:11px!important;line-height:1.55!important}
+  .mini-wheel{width:58px!important;height:58px!important}
+  .pdf-mini,.search-mini{font-size:26px!important}
+  .about-viktoria{margin:0 12px 48px!important;padding:22px!important;gap:16px!important;border-radius:16px!important}
+  .about-photo-wrap{min-height:220px!important}
+  .about-photo-wrap:after{width:150px;height:150px;font-size:42px}
+  .about-orbit{width:185px!important;height:185px!important}
+  .about-copy{text-align:left!important}
+  .about-copy h2{font-size:38px!important;line-height:1.05!important}
+  .about-actions{display:grid!important;grid-template-columns:1fr!important}
+  .about-actions .btn{width:100%!important}
+}
