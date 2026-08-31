@@ -27,3 +27,73 @@
 .about-copy{position:relative;z-index:2;max-width:720px}.about-copy h2{font:400 clamp(38px,5vw,64px)/1 Georgia,serif;margin:0 0 16px}.about-copy h2 em{font-style:normal;color:var(--gold2)}.about-copy p{color:#b8b5c4;font-size:16px}.about-lead{color:var(--gold2)!important;font-size:14px!important;letter-spacing:.06em}.about-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}.about-actions a{text-decoration:none}
 @media(max-width:900px){.about-viktoria{grid-template-columns:1fr;text-align:center;gap:22px}.about-copy{margin:auto}.about-actions{justify-content:center}}
 @media(max-width:700px){.about-viktoria{padding:22px;margin-bottom:70px}.about-photo-wrap{min-height:290px}.about-photo{width:250px;height:250px}.about-orbit{width:280px;height:280px}.about-copy p{font-size:15px}.about-actions{flex-direction:column}.about-actions .btn{width:100%}}
+
+
+/* ===== Calm editorial redesign: static celestial line-art ===== */
+:root{--bg:#05070d;--panel:rgba(7,10,20,.80);--panel2:rgba(11,13,27,.84);--gold:#b88642;--gold2:#ddb875;--ink:#f4ecdf;--muted:#aaa397;--purple:#34214d;--line:rgba(205,157,88,.26);--shadow:0 24px 70px rgba(0,0,0,.34)}
+body{background:
+  radial-gradient(circle at 48% 38%,rgba(69,42,98,.18),transparent 26%),
+  radial-gradient(circle at 74% 62%,rgba(102,63,40,.08),transparent 28%),
+  linear-gradient(180deg,#03050b,#070914 52%,#03050a);
+  color:var(--ink)}
+.space-bg{opacity:.8}
+.nebula{opacity:.07;filter:blur(100px)}
+.starfield{opacity:.12;animation:none!important;transform:none!important;background-size:101px 101px,173px 173px}
+.orbit,.floating-planet,.planet-hero,.mini-orbit{display:none!important}
+.topbar{background:rgba(4,6,13,.88);border-color:rgba(205,157,88,.2);box-shadow:0 14px 44px rgba(0,0,0,.26)}
+.brand-mark{border-color:rgba(221,184,117,.55);box-shadow:none}
+.brand b{color:var(--gold2);font-family:Georgia,"Times New Roman",serif;font-weight:500}
+.nav-btn:hover,.nav-btn.active{background:transparent;color:var(--gold2)}
+.nav-btn.active:after{content:"";display:block;width:18px;height:1px;background:var(--gold2);margin:4px auto 0}
+.glass{background:linear-gradient(145deg,rgba(10,13,27,.83),rgba(4,7,14,.76));border-color:rgba(205,157,88,.22);box-shadow:0 24px 60px rgba(0,0,0,.28);backdrop-filter:blur(10px)}
+.hero{min-height:690px;grid-template-columns:1.05fr .95fr;padding-top:54px}
+.hero-copy{padding-left:0;max-width:760px}
+.hero h1{font-size:clamp(58px,6.8vw,102px);line-height:.96;letter-spacing:-.035em;color:#efe5d5}
+.hero h1 em{color:var(--gold2);text-shadow:none}
+.hero-copy>p{max-width:690px;font-size:17px;line-height:1.7;color:#b8b0a5}
+.hero-actions{margin:34px 0 26px}
+.btn{border-radius:8px;border-color:rgba(205,157,88,.28);box-shadow:none}
+.btn.primary{background:linear-gradient(135deg,#d5aa63,#edcf91);border-color:#d9b16d;box-shadow:none}
+.btn.ghost{background:rgba(4,7,15,.52)}
+.trust-line{max-width:720px;color:#8f887f}
+.hero-visual{height:600px;overflow:visible}
+.zodiac-wrap{width:560px;height:560px;left:58%;top:49%;transform:translate(-50%,-50%)!important;filter:none;transition:none}
+.zodiac-ring{border-color:rgba(205,157,88,.38);box-shadow:none}
+.ring-1,.ring-2,.ring-3{animation:none!important}
+.ring-1{background:repeating-conic-gradient(from 0deg,rgba(205,157,88,.30) 0 1px,transparent 1px 30deg)}
+.ring-2{border-color:rgba(205,157,88,.24)}
+.ring-3{border-color:rgba(205,157,88,.18);border-style:solid}
+.zodiac-core{width:74px;height:74px;background:radial-gradient(circle,#e3c07c 0 3px,rgba(205,157,88,.16) 4px,transparent 62%);box-shadow:none}
+.zodiac-symbols span{color:#c59856;text-shadow:none}
+.float-card{display:none!important}
+.feature-grid{gap:14px;padding-bottom:70px}
+.feature-card{min-height:220px;border-radius:16px;background:rgba(5,8,17,.82);box-shadow:none}
+.feature-card:hover{transform:none;border-color:rgba(205,157,88,.42)}
+.feature-card h3{margin-top:38px}
+.feature-card p{color:#a7a094}
+.mini-wheel{box-shadow:none;background:repeating-conic-gradient(rgba(205,157,88,.23) 0 1deg,transparent 1deg 30deg)}
+.about-viktoria{background:
+  radial-gradient(circle at 12% 44%,rgba(74,49,101,.12),transparent 26%),
+  linear-gradient(145deg,rgba(8,11,23,.90),rgba(4,7,14,.84));
+  border-radius:18px;box-shadow:none}
+.about-photo{border-radius:50%;box-shadow:0 24px 55px rgba(0,0,0,.34);border-color:rgba(205,157,88,.42)}
+.about-orbit{animation:none!important;border-color:rgba(205,157,88,.22)}
+.about-orbit:before,.about-orbit:after{display:none}
+.about-copy h2{color:#eadcc7}.about-copy h2 em{color:var(--gold2)}
+.panel,.feature-card{border-color:rgba(205,157,88,.18)}
+.dashboard-head h2{color:#eadcc7}
+.natal-preview,.forecast-cover{background:linear-gradient(150deg,#090d19,#111022);box-shadow:none}
+.footer{border-top-color:rgba(205,157,88,.14)}
+@media(max-width:1100px){.hero{grid-template-columns:1fr}.hero-visual{height:520px}.zodiac-wrap{left:50%}}
+@media(max-width:700px){
+  .topbar{border-radius:18px}
+  .hero{padding-top:34px}
+  .hero h1{font-size:48px;line-height:1.02}
+  .hero-copy>p{font-size:16px}
+  .hero-actions{display:grid;grid-template-columns:1fr;gap:10px}
+  .hero-actions .btn{width:100%}
+  .hero-visual{height:360px}
+  .zodiac-wrap{width:315px;height:315px;opacity:.78}
+  .zodiac-symbols span{font-size:18px;transform:rotate(var(--a)) translateY(-137px) rotate(calc(-1*var(--a)))}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
