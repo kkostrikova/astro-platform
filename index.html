@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#070814" />
+  <title>ASTRA — простір астролога</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="space-bg" aria-hidden="true">
+    <div class="nebula nebula-a"></div><div class="nebula nebula-b"></div>
+    <div class="starfield stars-a"></div><div class="starfield stars-b"></div>
+    <div class="orbit orbit-a"><span class="planet planet-purple"></span></div>
+    <div class="orbit orbit-b"><span class="planet planet-gold"></span></div>
+    <div class="floating-planet planet-jupiter" data-parallax="0.35"></div>
+    <div class="floating-planet planet-moon" data-parallax="0.18"></div>
+  </div>
+
+  <header class="topbar glass">
+    <a class="brand" href="#home" data-route="home" aria-label="На головну">
+      <span class="brand-mark">✦</span>
+      <span><b>ASTRA</b><small>простір астролога</small></span>
+    </a>
+    <nav>
+      <button data-route="home" class="nav-btn active">Головна</button>
+      <button data-route="client" class="nav-btn">Кабінет клієнта</button>
+      <button data-route="astrologer" class="nav-btn">Кабінет астролога</button>
+      <button data-route="ephemeris" class="nav-btn">Ефемериди</button>
+    </nav>
+    <div class="top-actions">
+      <button class="icon-btn" title="Сповіщення">♡</button>
+      <button class="profile-pill"><span class="avatar">A</span><span>Астролог</span></button>
+    </div>
+  </header>
+
+  <main>
+    <!-- HOME -->
+    <section id="view-home" class="view active">
+      <div class="hero shell">
+        <div class="hero-copy reveal">
+          <div class="eyebrow">ПЕРСОНАЛЬНИЙ ПРОСТІР ДЛЯ КОНСУЛЬТАЦІЙ</div>
+          <h1>Астрологія, яку<br><em>приємно проживати.</em></h1>
+          <p>Карта, прогноз, матеріали консультації та особистий архів клієнта — в одному красивому просторі.</p>
+          <div class="hero-actions">
+            <button class="btn primary" data-route="client">Відкрити демо-кабінет ✦</button>
+            <button class="btn ghost" data-route="astrologer">Для астролога</button>
+          </div>
+          <div class="trust-line"><span>✦</span> Розрахунки залишаються у звичному астропроцесорі. Платформа зберігає результат і матеріали.</div>
+        </div>
+
+        <div class="hero-visual" id="parallax-scene">
+          <div class="zodiac-wrap" data-tilt>
+            <div class="zodiac-ring ring-1"></div><div class="zodiac-ring ring-2"></div><div class="zodiac-ring ring-3"></div>
+            <div class="zodiac-core"></div>
+            <div class="zodiac-symbols" aria-hidden="true">
+              <span style="--a:0deg">♈</span><span style="--a:30deg">♉</span><span style="--a:60deg">♊</span><span style="--a:90deg">♋</span>
+              <span style="--a:120deg">♌</span><span style="--a:150deg">♍</span><span style="--a:180deg">♎</span><span style="--a:210deg">♏</span>
+              <span style="--a:240deg">♐</span><span style="--a:270deg">♑</span><span style="--a:300deg">♒</span><span style="--a:330deg">♓</span>
+            </div>
+            <div class="mini-orbit mo-1"><i class="mini-planet p1"></i></div>
+            <div class="mini-orbit mo-2"><i class="mini-planet p2"></i></div>
+          </div>
+          <div class="float-card glass fc-1" data-parallax="0.65">
+            <small>ВАШ ПРОСТІР</small><b>Карта + прогноз</b><span>завжди під рукою</span>
+          </div>
+          <div class="float-card glass fc-2" data-parallax="0.42">
+            <small>ПІСЛЯ КОНСУЛЬТАЦІЇ</small><b>PDF / аудіо / нотатки</b><span>в особистому архіві</span>
+          </div>
+          <div class="planet-hero planet-saturn" data-parallax="0.8"><i></i></div>
+        </div>
+      </div>
+
+      <div class="shell feature-grid">
+        <article class="feature-card glass tilt-card"><span>01</span><h3>Моя карта</h3><p>Астролог завантажує готову натальну карту з власного професійного інструменту.</p><div class="mini-wheel"></div></article>
+        <article class="feature-card glass tilt-card"><span>02</span><h3>Прогноз</h3><p>Красивий PDF, який залишається у кабінеті клієнта та завжди доступний для завантаження.</p><div class="pdf-mini">PDF</div></article>
+        <article class="feature-card glass tilt-card"><span>03</span><h3>Архів</h3><p>Матеріали консультацій, нотатки, файли та попередні прогнози в одному місці.</p><div class="archive-dots"><i></i><i></i><i></i></div></article>
+        <article class="feature-card glass tilt-card"><span>04</span><h3>Ефемериди</h3><p>Окремий пошуковий довідник для астролога — з імпортом власної перевіреної бази до 2050 року.</p><div class="search-mini">⌕</div></article>
+      </div>
+    </section>
+
+    <!-- CLIENT -->
+    <section id="view-client" class="view">
+      <div class="shell dashboard-head">
+        <div><div class="eyebrow">КАБІНЕТ КЛІЄНТА</div><h2>Вітаємо у вашому просторі ✦</h2><p>Тут зберігаються матеріали, які підготував ваш астролог.</p></div>
+        <button class="btn primary">Написати астрологу</button>
+      </div>
+      <div class="shell client-grid">
+        <article class="glass panel hero-card-card">
+          <div class="panel-title"><div><small>МАТЕРІАЛ</small><h3>Моя натальна карта</h3></div><span class="tag">PDF</span></div>
+          <div class="natal-preview"><div class="mini-wheel big"></div></div>
+          <div class="panel-foot"><span id="clientNatalStatus">Файл ще не завантажений</span><button class="btn ghost small" id="downloadNatal" disabled>Завантажити</button></div>
+        </article>
+        <article class="glass panel forecast-card">
+          <div class="panel-title"><div><small>ПЕРСОНАЛЬНО</small><h3>Прогноз</h3></div><span class="tag">PDF</span></div>
+          <div class="forecast-cover"><span>ВАШ ПРОГНОЗ</span><b>місяць<br>у фокусі</b><i>✦</i></div>
+          <div class="panel-foot"><span id="clientForecastStatus">Очікує на завантаження</span><button class="btn ghost small" id="downloadForecast" disabled>Завантажити</button></div>
+        </article>
+        <article class="glass panel archive-card">
+          <div class="panel-title"><div><small>ІСТОРІЯ</small><h3>Архів консультацій</h3></div></div>
+          <div class="archive-list" id="clientArchive">
+            <div class="empty-soft">Після консультацій тут з'являться матеріали та нотатки.</div>
+          </div>
+        </article>
+        <article class="glass panel files-card wide">
+          <div class="panel-title"><div><small>ВАШІ ФАЙЛИ</small><h3>Мої матеріали</h3></div><div class="segmented"><button class="active">Усі</button><button>Карти</button><button>Прогнози</button></div></div>
+          <div class="file-grid" id="clientFileGrid"><div class="empty-soft">Поки що тут порожньо. Астролог додасть матеріали у ваш кабінет.</div></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ASTROLOGER -->
+    <section id="view-astrologer" class="view">
+      <div class="shell dashboard-head">
+        <div><div class="eyebrow">КАБІНЕТ АСТРОЛОГА</div><h2>Робочий простір</h2><p>Клієнти, нотатки, готові карти та прогнози — без повторного розрахунку.</p></div>
+        <button class="btn ghost" data-route="ephemeris">Відкрити ефемериди →</button>
+      </div>
+      <div class="shell astro-grid">
+        <aside class="glass panel clients-panel">
+          <div class="panel-title"><div><small>БАЗА</small><h3>Мої клієнти</h3></div><button class="icon-btn" id="addClient">＋</button></div>
+          <div class="client-list" id="clientList">
+            <button class="client-row active" data-client="Марія"><span class="avatar">М</span><span><b>Марія</b><small>активний кабінет</small></span></button>
+          </div>
+        </aside>
+        <section class="glass panel notes-panel">
+          <div class="panel-title"><div><small>НОТАТКИ</small><h3>Нотатки по клієнту</h3></div></div>
+          <textarea id="clientNotes" placeholder="Що важливо пам’ятати до наступної консультації..."></textarea>
+          <div class="panel-foot"><span id="saveNoteStatus">Зберігається локально у демо</span><button class="btn primary small" id="saveNotes">Зберегти</button></div>
+        </section>
+        <section class="glass panel upload-panel">
+          <div class="panel-title"><div><small>ФАЙЛИ</small><h3>Завантажити клієнту</h3></div></div>
+          <label class="dropzone" for="materialUpload"><span class="upload-icon">⇧</span><b>Перетягніть або виберіть файли</b><small>PDF, PNG, JPG, MP3, MP4 — демо зберігає файли у цьому браузері</small></label>
+          <input id="materialUpload" type="file" multiple accept=".pdf,.png,.jpg,.jpeg,.mp3,.mp4" hidden />
+          <div class="upload-classify">
+            <label>Тип матеріалу<select id="materialType"><option value="general">Інше</option><option value="natal">Натальна карта</option><option value="forecast">Прогноз</option><option value="consultation">Консультація</option></select></label>
+          </div>
+        </section>
+        <section class="glass panel forecast-builder wide">
+          <div class="panel-title"><div><small>ОФОРМЛЕННЯ</small><h3>Красивий PDF-прогноз</h3></div><span class="tag">PRINT → PDF</span></div>
+          <div class="builder-grid">
+            <label>Заголовок<input id="reportTitle" value="Персональний прогноз" /></label>
+            <label>Період<input id="reportPeriod" value="Вересень 2026" /></label>
+            <label class="full">Текст прогнозу<textarea id="reportText" placeholder="Вставте готовий текст прогнозу з вашої консультації..."></textarea></label>
+          </div>
+          <div class="panel-foot"><span>Система створює гарно оформлений макет. У діалозі друку оберіть «Зберегти як PDF».</span><button class="btn primary" id="makePdf">Створити PDF-макет ✦</button></div>
+        </section>
+      </div>
+    </section>
+
+    <!-- EPHEMERIS -->
+    <section id="view-ephemeris" class="view">
+      <div class="shell dashboard-head">
+        <div><div class="eyebrow">ДОВІДНИК АСТРОЛОГА</div><h2>Ефемериди та петлі до 2050 року</h2><p>Пошук працює по вашій власній перевіреній базі. У демо астрономічні дані навмисно не вигадуються.</p></div>
+        <label class="btn primary file-btn">Імпортувати CSV / JSON<input type="file" id="ephemerisImport" accept=".csv,.json" hidden></label>
+      </div>
+      <div class="shell ephem-layout">
+        <section class="glass panel ephem-panel">
+          <div class="search-row"><div class="search-box">⌕<input id="ephemSearch" placeholder="Планета, знак, подія, дата..." /></div><select id="ephemPlanet"><option value="">Усі планети</option></select><select id="ephemYear"><option value="">Усі роки</option></select></div>
+          <div class="ephem-note"><b>Формат:</b> planet, event, start_date, end_date, sign, notes. Дати — YYYY-MM-DD. Можна імпортувати дані до 2050 року.</div>
+          <div class="table-wrap">
+            <table><thead><tr><th>Планета</th><th>Подія / стан</th><th>Початок</th><th>Кінець</th><th>Знак</th><th>Нотатки</th></tr></thead><tbody id="ephemBody"><tr><td colspan="6"><div class="empty-state"><span>✦</span><b>База ще не імпортована</b><p>Завантажте CSV або JSON з перевіреними ефемеридами вашої подруги — пошук і фільтри запрацюють одразу.</p></div></td></tr></tbody></table>
+          </div>
+          <div class="panel-foot"><span id="ephemCount">0 записів</span><button class="btn ghost small" id="downloadTemplate">Завантажити шаблон CSV</button></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="shell footer"><span>ASTRA • demo surprise edition</span><span>Дані консультацій у цій демо-версії зберігаються лише у вашому браузері.</span></footer>
+
+  <section id="printReport" class="print-report" aria-hidden="true">
+    <div class="print-stars"></div><div class="print-orbit"></div>
+    <header><span class="brand-mark">✦</span><div><b>ASTRA</b><small>персональний прогноз</small></div></header>
+    <div class="print-hero"><div class="eyebrow">ПЕРСОНАЛЬНО ДЛЯ ВАС</div><h1 id="printTitle">Персональний прогноз</h1><p id="printPeriod">Вересень 2026</p></div>
+    <article id="printText">Текст прогнозу...</article>
+    <footer>Підготовлено вашим астрологом • <span id="printDate"></span></footer>
+  </section>
+
+  <div id="toast" class="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
