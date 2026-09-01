@@ -386,3 +386,14 @@ body{background:
   #view-client .file-grid{grid-template-columns:1fr}
   .mobile-nav{top:78px}
 }
+
+
+/* uploaded files visible inside astrologer cabinet */
+.active-client-line{margin:5px 0 0;color:#8f887f;font-size:11px}.active-client-line b{color:#d7b16e;font-weight:600}
+.uploaded-materials-head{display:flex;align-items:center;justify-content:space-between;margin-top:18px;padding-top:14px;border-top:1px solid rgba(205,157,88,.14);color:#c9a15f;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.uploaded-materials-head small{color:#7f786e;font-size:10px;letter-spacing:0;text-transform:none}
+.astrologer-material-list{display:flex;flex-direction:column;gap:7px;margin-top:9px;max-height:260px;overflow:auto}
+.astrologer-material-row{display:grid;grid-template-columns:42px 1fr auto;gap:10px;align-items:center;padding:10px;border:1px solid rgba(205,157,88,.13);background:rgba(3,6,13,.48);border-radius:8px}
+.material-file-icon{width:42px;height:42px;border:1px solid rgba(205,157,88,.22);display:grid;place-items:center;color:#c99c58;font-size:9px;letter-spacing:.04em}
+.material-main{min-width:0;display:flex;flex-direction:column}.material-main b{font-size:12px;color:#ddd4c7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.material-main small{font-size:10px;color:#817b72;margin-top:3px}
+@media(max-width:700px){.astrologer-material-list{max-height:none}.astrologer-material-row{grid-template-columns:38px 1fr auto}.material-file-icon{width:38px;height:38px}}
