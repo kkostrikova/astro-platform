@@ -79,6 +79,26 @@ function openDB(){return new Promise((res,rej)=>{const q=indexedDB.open(DB,2);q.
 async function addMaterial(file,type,clientId){const db=await openDB();return new Promise((res,rej)=>{const tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).add({name:file.name,type,clientId,blob:file,size:file.size,created:Date.now()});tx.oncomplete=res;tx.onerror=()=>rej(tx.error)})}
 async function allMaterials(){const db=await openDB();return new Promise((res,rej)=>{const q=db.transaction(STORE).objectStore(STORE).getAll();q.onsuccess=()=>res(q.result||[]);q.onerror=()=>rej(q.error)})}
 async function getMaterial(id){const db=await openDB();return new Promise((res,rej)=>{const q=db.transaction(STORE).objectStore(STORE).get(id);q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error)})}
+async function deleteMaterial(id){
+  const db=await openDB();
+  return new Promise((res,rej)=>{
+    const tx=db.transaction(STORE,'readwrite');
+    tx.objectStore(STORE).delete(id);
+    tx.oncomplete=res;
+    tx.onerror=()=>rej(tx.error);
+  });
+}
+async function removeMaterial(id){
+  const m=await getMaterial(id);
+  if(!m)return;
+  const ok=confirm('Видалити файл «'+m.name+'»?');
+  if(!ok)return;
+  await deleteMaterial(id);
+  toast('Файл видалено');
+  refreshClientCabinet();
+  refreshAstrologerMaterials();
+}
+window.removeMaterial=removeMaterial;
 async function downloadMaterial(id){const m=await getMaterial(id);if(!m)return;const u=URL.createObjectURL(m.blob);const a=document.createElement('a');a.href=u;a.download=m.name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1200)}
 window.downloadMaterial=downloadMaterial;
 function fmtSize(n){return n<1024?`${n} B`:n<1024**2?`${(n/1024).toFixed(1)} KB`:`${(n/1024**2).toFixed(1)} MB`}
@@ -93,7 +113,7 @@ async function refreshClientCabinet(){
   const grid=$('#clientFileGrid');
   if(grid){
     grid.innerHTML=rows.length?rows.sort((a,b)=>b.created-a.created).map(m=>`
-      <article class="file-card"><div><small>${labelType(m.type)}</small><b title="${escapeHtml(m.name)}">${escapeHtml(m.name)}</b><small>${fmtSize(m.size)}</small></div><button class="btn ghost small" onclick="downloadMaterial(${m.id})">↓</button></article>`).join('')
+      <article class="file-card"><div><small>${labelType(m.type)}</small><b title="${escapeHtml(m.name)}">${escapeHtml(m.name)}</b><small>${fmtSize(m.size)}</small></div><div class="material-actions"><button class="btn ghost small" onclick="downloadMaterial(${m.id})">↓</button><button class="btn danger small" onclick="removeMaterial(${m.id})">×</button></div></article>`).join('')
       :'<div class="empty-soft">Поки що тут порожньо. Астролог додасть матеріали у ваш кабінет.</div>';
   }
   const natal=rows.filter(x=>x.type==='natal').sort((a,b)=>b.created-a.created)[0];
@@ -101,7 +121,7 @@ async function refreshClientCabinet(){
   bindFeatured(natal,'natal');bindFeatured(fore,'forecast');
   const cons=rows.filter(x=>x.type==='consultation').sort((a,b)=>b.created-a.created);
   if($('#clientArchive')) $('#clientArchive').innerHTML=cons.length?cons.map(m=>`
-    <div class="file-card"><b>${escapeHtml(m.name)}</b><small>${new Date(m.created).toLocaleDateString('uk-UA')} • ${fmtSize(m.size)}</small><button class="btn ghost small" onclick="downloadMaterial(${m.id})">Завантажити</button></div>`).join('')
+    <div class="file-card"><b>${escapeHtml(m.name)}</b><small>${new Date(m.created).toLocaleDateString('uk-UA')} • ${fmtSize(m.size)}</small><div class="material-actions"><button class="btn ghost small" onclick="downloadMaterial(${m.id})">Завантажити</button><button class="btn danger small" onclick="removeMaterial(${m.id})">Видалити</button></div></div>`).join('')
     :'<div class="empty-soft">Після консультацій тут з\'являться матеріали та нотатки.</div>';
   loadActiveNote();
 }
@@ -122,7 +142,7 @@ async function refreshAstrologerMaterials(){
         <b title="${escapeHtml(m.name)}">${escapeHtml(m.name)}</b>
         <small>${labelType(m.type)} • ${fmtSize(m.size)} • ${new Date(m.created).toLocaleDateString('uk-UA')}</small>
       </div>
-      <button class="btn ghost small" onclick="downloadMaterial(${m.id})" title="Завантажити">↓</button>
+      <div class="material-actions"><button class="btn ghost small" onclick="downloadMaterial(${m.id})" title="Завантажити">↓</button><button class="btn danger small" onclick="removeMaterial(${m.id})" title="Видалити">×</button></div>
     </article>`).join('')
     :'<div class="empty-soft">Для цього клієнта файлів ще немає.</div>';
 }
