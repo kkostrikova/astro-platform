@@ -412,3 +412,15 @@ body{background:
   .natal-preview{height:300px!important}
   .natal-pdf-preview iframe{min-height:300px}
 }
+
+
+/* file delete actions */
+.material-actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.btn.danger{border-color:rgba(177,75,75,.35);color:#d89494;background:rgba(110,38,38,.10)}
+.btn.danger:hover{border-color:rgba(208,98,98,.55);background:rgba(110,38,38,.18)}
+.astrologer-material-row .material-actions{justify-self:end;flex-wrap:nowrap}
+.file-card .material-actions{align-self:flex-end}
+@media(max-width:700px){
+  .astrologer-material-row{grid-template-columns:38px 1fr}
+  .astrologer-material-row .material-actions{grid-column:2;justify-self:start}
+}
