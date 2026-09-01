@@ -113,7 +113,7 @@ async function refreshClientCabinet(){
   const grid=$('#clientFileGrid');
   if(grid){
     grid.innerHTML=rows.length?rows.sort((a,b)=>b.created-a.created).map(m=>`
-      <article class="file-card"><div><small>${labelType(m.type)}</small><b title="${escapeHtml(m.name)}">${escapeHtml(m.name)}</b><small>${fmtSize(m.size)}</small></div><div class="material-actions"><button class="btn ghost small" onclick="downloadMaterial(${m.id})">↓</button><button class="btn danger small" onclick="removeMaterial(${m.id})">×</button></div></article>`).join('')
+      <article class="file-card"><div><small>${labelType(m.type)}</small><b title="${escapeHtml(m.name)}">${escapeHtml(m.name)}</b><small>${fmtSize(m.size)}</small></div><div class="material-actions"><button class="btn ghost small" onclick="downloadMaterial(${m.id})">↓</button><button class="btn danger small delete-file-btn" onclick="removeMaterial(${m.id})">Видалити</button></div></article>`).join('')
       :'<div class="empty-soft">Поки що тут порожньо. Астролог додасть матеріали у ваш кабінет.</div>';
   }
   const natal=rows.filter(x=>x.type==='natal').sort((a,b)=>b.created-a.created)[0];
@@ -142,7 +142,7 @@ async function refreshAstrologerMaterials(){
         <b title="${escapeHtml(m.name)}">${escapeHtml(m.name)}</b>
         <small>${labelType(m.type)} • ${fmtSize(m.size)} • ${new Date(m.created).toLocaleDateString('uk-UA')}</small>
       </div>
-      <div class="material-actions"><button class="btn ghost small" onclick="downloadMaterial(${m.id})" title="Завантажити">↓</button><button class="btn danger small" onclick="removeMaterial(${m.id})" title="Видалити">×</button></div>
+      <div class="material-actions"><button class="btn ghost small" onclick="downloadMaterial(${m.id})" title="Завантажити">↓</button><button class="btn danger small delete-file-btn" onclick="removeMaterial(${m.id})" title="Видалити файл">Видалити</button></div>
     </article>`).join('')
     :'<div class="empty-soft">Для цього клієнта файлів ще немає.</div>';
 }
