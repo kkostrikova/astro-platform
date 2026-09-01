@@ -104,7 +104,7 @@
     <!-- CLIENT -->
     <section id="view-client" class="view">
       <div class="shell dashboard-head">
-        <div><div class="eyebrow">КАБІНЕТ КЛІЄНТА</div><h2>Ваш особистий простір</h2><p>Усі матеріали після консультацій — акуратно зібрані в одному місці.</p></div>
+        <div><div class="eyebrow">КАБІНЕТ КЛІЄНТА</div><h2>Ваш особистий простір</h2><p><span id="clientCabinetName">Клієнт</span> • усі матеріали після консультацій — в одному місці.</p></div>
         <button class="btn primary">Написати астрологу</button>
       </div>
       <div class="shell client-grid">
@@ -139,9 +139,14 @@
       </div>
       <div class="shell astro-grid">
         <aside class="glass panel clients-panel">
+      <div id="newClientForm" class="new-client-form" hidden>
+        <input id="newClientName" placeholder="Ім’я клієнта">
+        <input id="newClientBirth" type="date">
+        <button class="btn primary small" id="saveNewClient">Зберегти клієнта</button>
+      </div>
           <div class="panel-title"><div><small>БАЗА</small><h3>Мої клієнти</h3></div><button class="icon-btn" id="addClient">＋</button></div>
           <div class="client-list" id="clientList">
-            <button class="client-row active" data-client="Марія"><span class="avatar">М</span><span><b>Марія</b><small>активний кабінет</small></span></button>
+            <div id="clientList"></div>
           </div>
         </aside>
         <section class="glass panel notes-panel">
