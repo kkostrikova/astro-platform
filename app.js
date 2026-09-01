@@ -135,13 +135,44 @@ function fileIcon(name=''){
   return 'FILE';
 }
 
+let __natalPreviewUrl=null;
+async function renderNatalPreview(m){
+  const box=$('#natalPreview'); if(!box)return;
+  if(__natalPreviewUrl){URL.revokeObjectURL(__natalPreviewUrl);__natalPreviewUrl=null}
+  if(!m){
+    box.innerHTML='<div class="natal-placeholder"><div class="mini-wheel big"></div><small>Після завантаження натальної карти тут зʼявиться її превʼю</small></div>';
+    return;
+  }
+  const full=await getMaterial(m.id);
+  if(!full?.blob)return;
+  const type=(full.blob.type||'').toLowerCase();
+  const ext=String(full.name||'').split('.').pop().toLowerCase();
+  __natalPreviewUrl=URL.createObjectURL(full.blob);
+  if(type.startsWith('image/')||['png','jpg','jpeg','webp'].includes(ext)){
+    box.innerHTML=`<img class="natal-preview-image" src="${__natalPreviewUrl}" alt="Натальна карта">`;
+  }else if(type==='application/pdf'||ext==='pdf'){
+    box.innerHTML=`<div class="natal-pdf-preview">
+      <iframe src="${__natalPreviewUrl}#toolbar=0&navpanes=0&scrollbar=0" title="Превʼю натальної карти"></iframe>
+      <div class="pdf-preview-fallback"><b>Натальна карта PDF</b><small>${escapeHtml(full.name)}</small><button class="btn ghost small" onclick="downloadMaterial(${full.id})">Відкрити / завантажити</button></div>
+    </div>`;
+  }else{
+    box.innerHTML=`<div class="natal-placeholder"><div class="mini-wheel big"></div><small>${escapeHtml(full.name)}</small></div>`;
+  }
+}
 function bindFeatured(m,kind){
   const isNatal=kind==='natal';
   const status=$(isNatal?'#clientNatalStatus':'#clientForecastStatus');
   const btn=$(isNatal?'#downloadNatal':'#downloadForecast');
   if(!status||!btn)return;
-  if(m){status.textContent=`${m.name} • ${fmtSize(m.size)}`;btn.disabled=false;btn.onclick=()=>downloadMaterial(m.id)}
-  else{status.textContent=isNatal?'Файл ще не завантажений':'Очікує на завантаження';btn.disabled=true;btn.onclick=null}
+  if(m){
+    status.textContent=`${m.name} • ${fmtSize(m.size)}`;
+    btn.disabled=false;btn.onclick=()=>downloadMaterial(m.id);
+    if(isNatal) renderNatalPreview(m);
+  }else{
+    status.textContent=isNatal?'Файл ще не завантажений':'Очікує на завантаження';
+    btn.disabled=true;btn.onclick=null;
+    if(isNatal) renderNatalPreview(null);
+  }
 }
 
 const upload=$('#materialUpload'),dz=$('.dropzone');
