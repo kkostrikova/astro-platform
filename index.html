@@ -33,6 +33,12 @@
       <button class="profile-pill"><span class="avatar">V</span><span>Вікторія</span></button>
     </div>
   </header>
+  <div class="mobile-nav glass">
+    <button data-route="home" class="nav-btn">Головна</button>
+    <button data-route="client" class="nav-btn">Мій кабінет</button>
+    <button data-route="astrologer" class="nav-btn">Астролог</button>
+    <button data-route="ephemeris" class="nav-btn">Ефемериди</button>
+  </div>
 
   <main>
     <!-- HOME -->
@@ -98,7 +104,7 @@
     <!-- CLIENT -->
     <section id="view-client" class="view">
       <div class="shell dashboard-head">
-        <div><div class="eyebrow">КАБІНЕТ КЛІЄНТА</div><h2>Вітаємо у вашому просторі ✦</h2><p>Тут зберігаються матеріали, які підготував ваш астролог.</p></div>
+        <div><div class="eyebrow">КАБІНЕТ КЛІЄНТА</div><h2>Ваш особистий простір</h2><p>Усі матеріали після консультацій — акуратно зібрані в одному місці.</p></div>
         <button class="btn primary">Написати астрологу</button>
       </div>
       <div class="shell client-grid">
@@ -128,7 +134,7 @@
     <!-- ASTROLOGER -->
     <section id="view-astrologer" class="view">
       <div class="shell dashboard-head">
-        <div><div class="eyebrow">КАБІНЕТ АСТРОЛОГА</div><h2>Робочий простір</h2><p>Клієнти, нотатки, готові карти та прогнози — без повторного розрахунку.</p></div>
+        <div><div class="eyebrow">КАБІНЕТ АСТРОЛОГА</div><h2>Кабінет Вікторії</h2><p>Клієнти, нотатки, готові карти, прогнози та ефемериди — без зайвої рутини.</p></div>
         <button class="btn ghost" data-route="ephemeris">Відкрити ефемериди →</button>
       </div>
       <div class="shell astro-grid">
@@ -166,7 +172,7 @@
     <!-- EPHEMERIS -->
     <section id="view-ephemeris" class="view">
       <div class="shell dashboard-head">
-        <div><div class="eyebrow">ДОВІДНИК АСТРОЛОГА</div><h2>Ефемериди та петлі до 2050 року</h2><p>Пошук працює по вашій власній перевіреній базі. У демо астрономічні дані навмисно не вигадуються.</p></div>
+        <div><div class="eyebrow">ЕФЕМЕРИДИ</div><h2>Ефемериди та ретроградні петлі до 2050 року</h2><p>Пошук працює по вашій власній перевіреній базі. У демо астрономічні дані навмисно не вигадуються.</p></div>
         <label class="btn primary file-btn">Імпортувати CSV / JSON<input type="file" id="ephemerisImport" accept=".csv,.json" hidden></label>
       </div>
       <div class="shell ephem-layout">
