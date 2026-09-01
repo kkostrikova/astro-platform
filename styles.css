@@ -397,3 +397,18 @@ body{background:
 .material-file-icon{width:42px;height:42px;border:1px solid rgba(205,157,88,.22);display:grid;place-items:center;color:#c99c58;font-size:9px;letter-spacing:.04em}
 .material-main{min-width:0;display:flex;flex-direction:column}.material-main b{font-size:12px;color:#ddd4c7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.material-main small{font-size:10px;color:#817b72;margin-top:3px}
 @media(max-width:700px){.astrologer-material-list{max-height:none}.astrologer-material-row{grid-template-columns:38px 1fr auto}.material-file-icon{width:38px;height:38px}}
+
+
+/* natal chart preview */
+.natal-preview{overflow:hidden;position:relative}
+.natal-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;color:#827b72;text-align:center;padding:18px}
+.natal-placeholder small{max-width:280px;line-height:1.5}
+.natal-preview-image{width:100%;height:100%;display:block;object-fit:contain;background:#050812;padding:10px}
+.natal-pdf-preview{position:relative;width:100%;height:100%;background:#050812}
+.natal-pdf-preview iframe{width:100%;height:100%;border:0;background:#050812}
+.pdf-preview-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:9px;text-align:center;padding:18px;background:linear-gradient(145deg,rgba(5,8,18,.94),rgba(10,8,18,.90));z-index:-1}
+.pdf-preview-fallback b{font:400 22px Georgia,serif;color:#e5d7c4}.pdf-preview-fallback small{color:#8c857b;max-width:90%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media(max-width:700px){
+  .natal-preview{height:300px!important}
+  .natal-pdf-preview iframe{min-height:300px}
+}
