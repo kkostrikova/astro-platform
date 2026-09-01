@@ -9,7 +9,7 @@ function route(name){
   history.replaceState(null,'','#'+name);
   window.scrollTo({top:0,behavior:'smooth'});
   if(name==='client') refreshClientCabinet();
-  if(name==='astrologer') renderClients();
+  if(name==='astrologer'){renderClients();refreshAstrologerMaterials();}
   if(name==='ephemeris') renderEphem();
 }
 $$('[data-route]').forEach(el=>el.addEventListener('click',e=>{e.preventDefault();route(el.dataset.route)}));
@@ -41,6 +41,7 @@ function setActiveClient(id){
   localStorage.setItem(ACTIVE_KEY,id);
   renderClients();
   refreshClientCabinet();
+  refreshAstrologerMaterials();
   const c=getActiveClient(); toast('Активний клієнт: '+c.name);
 }
 window.setActiveClient=setActiveClient;
@@ -69,7 +70,7 @@ $('#saveNewClient')?.addEventListener('click',()=>{
   rows.push({id,name,birth,created:Date.now()});
   saveClients(rows); localStorage.setItem(ACTIVE_KEY,id);
   $('#newClientName').value=''; $('#newClientBirth').value=''; $('#newClientForm').hidden=true;
-  renderClients(); refreshClientCabinet(); toast('Клієнта додано');
+  renderClients(); refreshClientCabinet(); refreshAstrologerMaterials(); refreshAstrologerMaterials(); toast('Клієнта додано');
 });
 
 // ---------- IndexedDB materials ----------
@@ -104,6 +105,36 @@ async function refreshClientCabinet(){
     :'<div class="empty-soft">Після консультацій тут з\'являться матеріали та нотатки.</div>';
   loadActiveNote();
 }
+
+async function refreshAstrologerMaterials(){
+  const client=getActiveClient();
+  if($('#uploadClientName')) $('#uploadClientName').textContent=client.name;
+  const list=$('#astrologerMaterialList');
+  if(!list)return;
+  let rows=[];
+  try{rows=(await allMaterials()).filter(x=>x.clientId===client.id)}catch{}
+  rows.sort((a,b)=>b.created-a.created);
+  if($('#astrologerMaterialCount')) $('#astrologerMaterialCount').textContent=rows.length+' '+(rows.length===1?'файл':'файлів');
+  list.innerHTML=rows.length?rows.map(m=>`
+    <article class="astrologer-material-row">
+      <div class="material-file-icon">${fileIcon(m.name)}</div>
+      <div class="material-main">
+        <b title="${escapeHtml(m.name)}">${escapeHtml(m.name)}</b>
+        <small>${labelType(m.type)} • ${fmtSize(m.size)} • ${new Date(m.created).toLocaleDateString('uk-UA')}</small>
+      </div>
+      <button class="btn ghost small" onclick="downloadMaterial(${m.id})" title="Завантажити">↓</button>
+    </article>`).join('')
+    :'<div class="empty-soft">Для цього клієнта файлів ще немає.</div>';
+}
+function fileIcon(name=''){
+  const ext=String(name).split('.').pop().toLowerCase();
+  if(ext==='pdf')return 'PDF';
+  if(['jpg','jpeg','png','webp'].includes(ext))return 'IMG';
+  if(['mp3','wav','m4a'].includes(ext))return 'AUD';
+  if(['mp4','mov','webm'].includes(ext))return 'VID';
+  return 'FILE';
+}
+
 function bindFeatured(m,kind){
   const isNatal=kind==='natal';
   const status=$(isNatal?'#clientNatalStatus':'#clientForecastStatus');
@@ -125,7 +156,9 @@ async function handleFiles(files){
   const clientId=getActiveClientId();
   for(const f of files) await addMaterial(f,type,clientId);
   toast('Додано файлів: '+files.length);
+  if(upload) upload.value='';
   refreshClientCabinet();
+  refreshAstrologerMaterials();
 }
 
 // ---------- per-client notes ----------
