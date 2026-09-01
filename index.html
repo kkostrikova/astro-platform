@@ -155,11 +155,17 @@
           <div class="panel-foot"><span id="saveNoteStatus">Зберігається локально у демо</span><button class="btn primary small" id="saveNotes">Зберегти</button></div>
         </section>
         <section class="glass panel upload-panel">
-          <div class="panel-title"><div><small>ФАЙЛИ</small><h3>Завантажити клієнту</h3></div></div>
-          <label class="dropzone" for="materialUpload"><span class="upload-icon">⇧</span><b>Перетягніть або виберіть файли</b><small>PDF, PNG, JPG, MP3, MP4 — демо зберігає файли у цьому браузері</small></label>
+          <div class="panel-title">
+            <div><small>ФАЙЛИ</small><h3>Матеріали клієнта</h3><p class="active-client-line">Активний клієнт: <b id="uploadClientName">—</b></p></div>
+          </div>
+          <label class="dropzone" for="materialUpload"><span class="upload-icon">⇧</span><b>Перетягніть або виберіть файли</b><small>PDF, PNG, JPG, MP3, MP4</small></label>
           <input id="materialUpload" type="file" multiple accept=".pdf,.png,.jpg,.jpeg,.mp3,.mp4" hidden />
           <div class="upload-classify">
             <label>Тип матеріалу<select id="materialType"><option value="general">Інше</option><option value="natal">Натальна карта</option><option value="forecast">Прогноз</option><option value="consultation">Консультація</option></select></label>
+          </div>
+          <div class="uploaded-materials-head"><span>Уже завантажено</span><small id="astrologerMaterialCount">0 файлів</small></div>
+          <div id="astrologerMaterialList" class="astrologer-material-list">
+            <div class="empty-soft">Для цього клієнта файлів ще немає.</div>
           </div>
         </section>
         <section class="glass panel forecast-builder wide">
