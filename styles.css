@@ -279,3 +279,110 @@ body{background:
   .luxury-cabinet{grid-template-columns:1fr;padding:54px 0 44px}
   .luxury-cabinet .btn{width:100%}
 }
+
+
+/* ===== Luxury cabinets / inner pages ===== */
+.mobile-nav{display:none}
+#view-client,#view-astrologer,#view-ephemeris{background:transparent}
+#view-client .dashboard-head,
+#view-astrologer .dashboard-head,
+#view-ephemeris .dashboard-head{padding:72px 0 30px}
+#view-client .dashboard-head h2,
+#view-astrologer .dashboard-head h2,
+#view-ephemeris .dashboard-head h2{
+  font:400 clamp(38px,4.8vw,62px)/1.05 Georgia,"Times New Roman",serif;
+  color:#eee3d3;letter-spacing:-.025em
+}
+#view-client .dashboard-head p,
+#view-astrologer .dashboard-head p,
+#view-ephemeris .dashboard-head p{color:#9f978d;max-width:760px}
+#view-client .panel,
+#view-astrologer .panel,
+#view-ephemeris .panel{
+  background:linear-gradient(150deg,rgba(8,11,22,.88),rgba(3,6,13,.84));
+  border:1px solid rgba(205,157,88,.19);
+  border-radius:14px;
+  box-shadow:none
+}
+#view-client .panel-title h3,
+#view-astrologer .panel-title h3,
+#view-ephemeris .panel-title h3{
+  font:400 22px Georgia,serif;color:#eadfce
+}
+#view-client .panel-title small,
+#view-astrologer .panel-title small,
+#view-ephemeris .panel-title small{color:#bd9152}
+#view-client .tag,
+#view-astrologer .tag,
+#view-ephemeris .tag{border-radius:4px;color:#c99e5e;border-color:rgba(205,157,88,.26)}
+#view-client .natal-preview{
+  background:
+    radial-gradient(circle at 50% 45%,rgba(71,45,94,.18),transparent 40%),
+    linear-gradient(155deg,#070a13,#0c0d18);
+  border:1px solid rgba(205,157,88,.14)
+}
+#view-client .forecast-cover{
+  background:
+    radial-gradient(circle at 76% 18%,rgba(83,48,112,.22),transparent 27%),
+    linear-gradient(155deg,#0b0d18,#080a12 68%,#15101c);
+  border-color:rgba(205,157,88,.16)
+}
+#view-client .forecast-cover:before{border-color:rgba(205,157,88,.15)}
+#view-client .file-card,
+#view-client .empty-soft,
+#view-astrologer .client-row,
+#view-ephemeris .table-wrap{
+  border-color:rgba(205,157,88,.13);
+  background:rgba(3,6,13,.52)
+}
+#view-client .segmented button{border-radius:4px}
+#view-client .segmented button.active{background:rgba(205,157,88,.11);color:#d6ae6b}
+#view-astrologer .notes-panel textarea,
+#view-astrologer .dropzone,
+#view-astrologer select,
+#view-astrologer input,
+#view-astrologer textarea,
+#view-ephemeris input,
+#view-ephemeris select{
+  background:#060914!important;
+  border-color:rgba(205,157,88,.14)!important;
+  border-radius:6px!important
+}
+#view-astrologer .dropzone{min-height:170px}
+#view-astrologer .client-row.active,
+#view-astrologer .client-row:hover{background:rgba(205,157,88,.07);border-color:rgba(205,157,88,.18)}
+#view-ephemeris .search-box{background:#060914;border-color:rgba(205,157,88,.14);border-radius:6px}
+#view-ephemeris table th{background:rgba(205,157,88,.04);color:#c99b58}
+#view-ephemeris table td{color:#c8c2b9}
+#view-ephemeris .empty-state b{color:#e4d8c7}
+#view-client .btn,#view-astrologer .btn,#view-ephemeris .btn{border-radius:4px}
+#view-client .btn.primary,#view-astrologer .btn.primary,#view-ephemeris .btn.primary{
+  background:#d9b46f;color:#171009;border-color:#d9b46f;box-shadow:none
+}
+
+@media(max-width:1100px){
+  .mobile-nav{
+    display:flex;position:sticky;top:82px;z-index:45;
+    width:min(100% - 24px,740px);margin:8px auto 0;
+    padding:6px;gap:4px;overflow-x:auto;
+    background:rgba(4,6,13,.9);border-radius:12px
+  }
+  .mobile-nav .nav-btn{white-space:nowrap;flex:1;min-width:max-content;padding:9px 12px}
+}
+@media(max-width:700px){
+  #view-client .dashboard-head,
+  #view-astrologer .dashboard-head,
+  #view-ephemeris .dashboard-head{padding:46px 0 20px}
+  #view-client .dashboard-head h2,
+  #view-astrologer .dashboard-head h2,
+  #view-ephemeris .dashboard-head h2{font-size:38px}
+  #view-client .client-grid,
+  #view-astrologer .astro-grid{gap:10px}
+  #view-client .panel,
+  #view-astrologer .panel,
+  #view-ephemeris .panel{padding:16px;border-radius:10px}
+  #view-client .natal-preview,#view-client .forecast-cover{height:220px}
+  #view-client .mini-wheel.big{width:165px;height:165px}
+  #view-client .file-grid{grid-template-columns:1fr}
+  .mobile-nav{top:78px}
+}
