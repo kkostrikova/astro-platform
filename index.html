@@ -10,7 +10,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600;700&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,300,0,0&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css?v=20260901-2" />
   <link rel="stylesheet" href="theme-ivory.css?v=20260905-2" />
-  <link rel="stylesheet" href="client-experience.css?v=20260905-1" />
+  <link rel="stylesheet" href="client-experience.css?v=20260905-2" />
+  <link rel="stylesheet" href="pdf-studio.css?v=20260905-1" />
 </head>
 <body>
   <div class="space-bg" aria-hidden="true">
@@ -31,7 +32,6 @@
       <button data-route="home" class="nav-btn active">Головна</button>
       <button data-route="client" class="nav-btn">Кабінет клієнта</button>
       <button data-route="astrologer" class="nav-btn">Кабінет астролога</button>
-      <button data-route="ephemeris" class="nav-btn">Ефемериди</button>
     </nav>
     <div class="top-actions">
       <button class="profile-pill" data-route="client"><span class="avatar">V</span><span>Кабінет</span></button>
@@ -42,17 +42,12 @@
     <button data-route="home" class="nav-btn">Головна</button>
     <button data-route="client" class="nav-btn">Мій кабінет</button>
     <button data-route="astrologer" class="nav-btn">Астролог</button>
-    <button data-route="ephemeris" class="nav-btn">Ефемериди</button>
   </div>
 
   <main>
     <!-- HOME -->
     <section id="view-home" class="view active home-luxury">
-      <div class="home-bg-art" aria-hidden="true">
-        <div class="home-chart-fragment"></div>
-        <div class="home-stars"></div>
-      </div>
-
+      <div class="home-bg-art" aria-hidden="true"><div class="home-chart-fragment"></div><div class="home-stars"></div></div>
       <section class="shell luxury-hero">
         <div class="luxury-hero-copy">
           <div class="luxury-kicker">АСТРОЛОГІЯ ДЛЯ РЕАЛЬНОГО ЖИТТЯ</div>
@@ -64,17 +59,8 @@
             <button class="btn ghost" data-route="client">Відкрити кабінет <span class="material-symbols-rounded" aria-hidden="true">arrow_forward</span></button>
           </div>
         </div>
-
-        <div class="luxury-portrait-panel">
-          <div class="luxury-portrait-monogram">VA</div>
-          <div class="luxury-portrait-caption">
-            <span>ВІКТОРІЯ</span>
-            <b>ASTROSTAR</b>
-            <small>астролог • натальні карти • прогнози • соляр • таро</small>
-          </div>
-        </div>
+        <div class="luxury-portrait-panel"><div class="luxury-portrait-monogram">VA</div><div class="luxury-portrait-caption"><span>ВІКТОРІЯ</span><b>ASTROSTAR</b><small>астролог • натальні карти • прогнози • соляр • таро</small></div></div>
       </section>
-
       <section class="shell luxury-services">
         <div class="luxury-section-title">Напрями роботи</div>
         <div class="luxury-services-row">
@@ -84,28 +70,11 @@
           <article><span>04</span><h3>Таро</h3><p>Додатковий погляд на ситуацію та рішення.</p></article>
         </div>
       </section>
-
       <section class="shell luxury-about">
-        <div class="luxury-about-copy">
-          <div class="luxury-kicker">ПРО ВІКТОРІЮ</div>
-          <h2>Не передбачати життя.<br><em>Допомагати бачити його ясніше.</em></h2>
-          <div class="luxury-about-statement">
-            <p><strong>Консультація залишається живою роботою астролога.</strong><span>Платформа зберігає її результат — готові карти, PDF-прогнози, матеріали та особистий архів клієнта.</span></p>
-            <a class="luxury-text-link" href="https://instagram.com/viktoria_astrostar" target="_blank" rel="noopener">@viktoria_astrostar <span class="material-symbols-rounded" aria-hidden="true">arrow_outward</span></a>
-          </div>
-        </div>
+        <div class="luxury-about-copy"><div class="luxury-kicker">ПРО ВІКТОРІЮ</div><h2>Не передбачати життя.<br><em>Допомагати бачити його ясніше.</em></h2><div class="luxury-about-statement"><p><strong>Консультація залишається живою роботою астролога.</strong><span>Платформа зберігає її результат — готові карти, PDF-прогнози, матеріали та особистий архів клієнта.</span></p><a class="luxury-text-link" href="https://instagram.com/viktoria_astrostar" target="_blank" rel="noopener">@viktoria_astrostar <span class="material-symbols-rounded" aria-hidden="true">arrow_outward</span></a></div></div>
         <div class="luxury-about-mark" aria-hidden="true">✦</div>
       </section>
-
-      <section class="shell luxury-cabinet">
-        <div>
-          <div class="luxury-kicker">ОСОБИСТИЙ КАБІНЕТ</div>
-          <h2>Усе після консультації —<br><em>в одному приватному просторі.</em></h2>
-          <p>Натальна карта, PDF-прогноз, матеріали консультації та архів.</p>
-        </div>
-        <button class="btn primary" data-route="client">Увійти в кабінет</button>
-      </section>
-
+      <section class="shell luxury-cabinet"><div><div class="luxury-kicker">ОСОБИСТИЙ КАБІНЕТ</div><h2>Усе після консультації —<br><em>в одному приватному просторі.</em></h2><p>Натальна карта, PDF-прогноз, матеріали консультації та архів.</p></div><button class="btn primary" data-route="client">Увійти в кабінет</button></section>
       <div class="shell luxury-footer-line">VIKTORIA ASTROSTAR • personal astrology space</div>
     </section>
 
@@ -133,9 +102,7 @@
         </article>
         <article class="glass panel archive-card">
           <div class="panel-title"><div><small>ІСТОРІЯ</small><h3>Архів консультацій</h3></div><span class="material-symbols-rounded panel-title-icon" aria-hidden="true">history</span></div>
-          <div class="archive-list" id="clientArchive">
-            <div class="empty-soft">Після консультацій тут з'являться матеріали.</div>
-          </div>
+          <div class="archive-list" id="clientArchive"><div class="empty-soft">Після консультацій тут з'являться матеріали.</div></div>
         </article>
         <article class="glass panel files-card wide">
           <div class="panel-title materials-heading"><div><small>ВАШІ ФАЙЛИ</small><h3>Мої матеріали</h3></div><div class="segmented" aria-label="Фільтр матеріалів"><button class="active" data-material-filter="all">Усі</button><button data-material-filter="natal">Карти</button><button data-material-filter="forecast">Прогнози</button></div></div>
@@ -147,8 +114,8 @@
     <!-- ASTROLOGER -->
     <section id="view-astrologer" class="view">
       <div class="shell dashboard-head">
-        <div class="dashboard-intro"><div class="eyebrow">КАБІНЕТ АСТРОЛОГА</div><h2>Кабінет Вікторії</h2><p>Клієнти, нотатки, готові карти, прогнози та ефемериди — без зайвої рутини.</p></div>
-        <button class="btn ghost dashboard-contact" data-route="ephemeris">Відкрити ефемериди <span class="material-symbols-rounded" aria-hidden="true">arrow_forward</span></button>
+        <div class="dashboard-intro"><div class="eyebrow">КАБІНЕТ АСТРОЛОГА</div><h2>Кабінет Вікторії</h2><p>Клієнти, нотатки, готові карти, прогнози та красиві PDF-розбори — без зайвої рутини.</p></div>
+        <button class="btn ghost dashboard-contact" id="openPdfStudio">PDF-студія <span class="material-symbols-rounded" aria-hidden="true">arrow_downward</span></button>
       </div>
       <div class="shell cabinet-summary astrologer-summary" aria-label="Огляд роботи">
         <div><span class="material-symbols-rounded" aria-hidden="true">group</span><p><b id="astroClientCount">0</b><small>клієнтів у базі</small></p></div>
@@ -172,45 +139,16 @@
           <div class="panel-foot"><span id="saveNoteStatus">Зберігається у захищеній базі</span><button class="btn primary small" id="saveNotes">Зберегти нотатку</button></div>
         </section>
         <section class="glass panel upload-panel">
-          <div class="panel-title">
-            <div><small>ФАЙЛИ</small><h3>Матеріали клієнта</h3><p class="active-client-line">Активний клієнт: <b id="uploadClientName">—</b></p></div>
-          </div>
+          <div class="panel-title"><div><small>ФАЙЛИ</small><h3>Матеріали клієнта</h3><p class="active-client-line">Активний клієнт: <b id="uploadClientName">—</b></p></div></div>
           <label class="dropzone" for="materialUpload"><span class="material-symbols-rounded upload-icon" aria-hidden="true">upload_file</span><b>Перетягніть або виберіть файли</b><small>PDF, PNG, JPG, WEBP, MP3, MP4 • до 50 MB</small><span class="dropzone-action">Обрати файли</span></label>
           <input id="materialUpload" type="file" multiple accept=".pdf,.png,.jpg,.jpeg,.webp,.mp3,.mp4" hidden />
-          <div class="upload-classify">
-            <label>Тип матеріалу<select id="materialType"><option value="general">Інше</option><option value="natal">Натальна карта</option><option value="forecast">Прогноз</option><option value="consultation">Консультація</option></select></label>
-          </div>
+          <div class="upload-classify"><label>Тип матеріалу<select id="materialType"><option value="general">Інше</option><option value="natal">Натальна карта</option><option value="forecast">Прогноз</option><option value="consultation">Консультація</option></select></label></div>
           <div class="uploaded-materials-head"><span>Уже завантажено</span><small id="astrologerMaterialCount">0 файлів</small></div>
-          <div id="astrologerMaterialList" class="astrologer-material-list">
-            <div class="empty-soft">Для цього клієнта файлів ще немає.</div>
-          </div>
+          <div id="astrologerMaterialList" class="astrologer-material-list"><div class="empty-soft">Для цього клієнта файлів ще немає.</div></div>
         </section>
         <section class="glass panel forecast-builder wide">
-          <div class="panel-title"><div><small>ОФОРМЛЕННЯ</small><h3>Персональний PDF-прогноз</h3></div><span class="tag"><span class="material-symbols-rounded" aria-hidden="true">picture_as_pdf</span> PDF</span></div>
-          <div class="builder-grid">
-            <label>Заголовок<input id="reportTitle" value="Персональний прогноз" /></label>
-            <label>Період<input id="reportPeriod" value="Вересень 2026" /></label>
-            <label class="full">Текст прогнозу<textarea id="reportText" placeholder="Вставте готовий текст прогнозу з вашої консультації..."></textarea></label>
-          </div>
-          <div class="panel-foot"><span>У діалозі друку оберіть «Зберегти як PDF».</span><button class="btn primary" id="makePdf">Створити PDF-макет <span class="material-symbols-rounded" aria-hidden="true">arrow_forward</span></button></div>
-        </section>
-      </div>
-    </section>
-
-    <!-- EPHEMERIS -->
-    <section id="view-ephemeris" class="view">
-      <div class="shell dashboard-head">
-        <div><div class="eyebrow">ЕФЕМЕРИДИ</div><h2>Ефемериди та ретроградні петлі до 2050 року</h2><p>Приватний робочий інструмент Вікторії. Перевірена база зберігається у Supabase й доступна після входу астролога.</p></div>
-        <label class="btn primary file-btn">Імпортувати CSV / JSON<input type="file" id="ephemerisImport" accept=".csv,.json" hidden></label>
-      </div>
-      <div class="shell ephem-layout">
-        <section class="glass panel ephem-panel">
-          <div class="search-row"><div class="search-box">⌕<input id="ephemSearch" placeholder="Планета, знак, подія, дата..." /></div><select id="ephemPlanet"><option value="">Усі планети</option></select><select id="ephemYear"><option value="">Усі роки</option></select></div>
-          <div class="ephem-note"><b>Формат:</b> planet, event, start_date, end_date, sign, notes. Дати — YYYY-MM-DD. Можна імпортувати перевірені дані до 2050 року.</div>
-          <div class="table-wrap">
-            <table><thead><tr><th>Планета</th><th>Подія / стан</th><th>Початок</th><th>Кінець</th><th>Знак</th><th>Нотатки</th></tr></thead><tbody id="ephemBody"><tr><td colspan="6"><div class="empty-state"><span>✦</span><b>Робочий інструмент астролога</b><p>Ефемериди доступні після входу в кабінет Вікторії.</p></div></td></tr></tbody></table>
-          </div>
-          <div class="panel-foot"><span id="ephemCount">Приватний розділ</span><button class="btn ghost small" id="downloadTemplate">Завантажити шаблон CSV</button></div>
+          <div class="panel-title"><div><small>ОФОРМЛЕННЯ</small><h3>PDF-студія</h3></div><span class="tag"><span class="material-symbols-rounded" aria-hidden="true">picture_as_pdf</span> PDF</span></div>
+          <div class="empty-soft">Завантаження PDF-студії…</div>
         </section>
       </div>
     </section>
@@ -229,5 +167,7 @@
   <div id="toast" class="toast"></div>
   <script src="app.js?v=20260905-6"></script>
   <script src="client-experience.js?v=20260905-3"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="pdf-studio.js?v=20260905-1"></script>
 </body>
 </html>
