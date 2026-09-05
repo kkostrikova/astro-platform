@@ -1,7 +1,7 @@
 (()=>{
   const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
   const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const PROFILE_KEY='viktoria-client-discovery-profile';
+  const notify=msg=>{const t=$('#toast');if(!t)return;t.textContent=msg;t.classList.add('show');clearTimeout(window.__profileToast);window.__profileToast=setTimeout(()=>t.classList.remove('show'),2800)};
 
   // Ephemerides are a private astrologer tool, not a client-facing navigation item.
   $$('.topbar [data-route="ephemeris"], #mobileNav [data-route="ephemeris"]').forEach(el=>el.hidden=true);
@@ -28,7 +28,7 @@
           <label class="wide">Місто народження<input id="astroBirthPlace" placeholder="Наприклад, Херсон, Україна"></label>
         </div>
         <div class="discovery-form-actions">
-          <button class="btn primary small" id="revealAstroProfile">Показати мій портрет</button>
+          <button class="btn primary small" id="revealAstroProfile">Зберегти й показати мій портрет</button>
           <span class="discovery-note">Точний час і місце знадобляться Вікторії для повного розбору.</span>
         </div>
         <div class="astro-profile" id="astroProfile"></div>
@@ -112,9 +112,19 @@
     let i;if((m===12&&day>=22)||(m===1&&day<=19))i=0;else if((m===1&&day>=20)||(m===2&&day<=18))i=1;else if((m===2&&day>=19)||(m===3&&day<=20))i=2;else if((m===3&&day>=21)||(m===4&&day<=19))i=3;else if((m===4&&day>=20)||(m===5&&day<=20))i=4;else if((m===5&&day>=21)||(m===6&&day<=20))i=5;else if((m===6&&day>=21)||(m===7&&day<=22))i=6;else if((m===7&&day>=23)||(m===8&&day<=22))i=7;else if((m===8&&day>=23)||(m===9&&day<=22))i=8;else if((m===9&&day>=23)||(m===10&&day<=22))i=9;else if((m===10&&day>=23)||(m===11&&day<=21))i=10;else i=11;return {...signs[i],index:i};
   }
   function dailyTarot(signIndex=0){const n=new Date(),key=Number(`${n.getFullYear()}${String(n.getMonth()+1).padStart(2,'0')}${String(n.getDate()).padStart(2,'0')}`);return tarot[(key+signIndex*7)%tarot.length]}
-  function saveProfile(){const p={name:$('#astroFirstName')?.value.trim()||'',birth:$('#astroBirthDate')?.value||'',time:$('#astroBirthTime')?.value||'',place:$('#astroBirthPlace')?.value.trim()||''};localStorage.setItem(PROFILE_KEY,JSON.stringify(p));return p}
+  function currentClient(){try{return typeof getActiveClient==='function'?getActiveClient():null}catch{return null}}
+  function fillProfile(client){if(!client)return;$('#astroFirstName').value=client.name||'';$('#astroBirthDate').value=client.birth||'';$('#astroBirthTime').value=client.birth_time?String(client.birth_time).slice(0,5):'';$('#astroBirthPlace').value=client.birth_place||'';if(client.birth)renderProfile({name:client.name||'',birth:client.birth,time:client.birth_time||'',place:client.birth_place||''},true)}
+  async function saveProfile(){
+    const client=currentClient();if(!client||typeof sb==='undefined'||!sb){notify('Профіль ще завантажується');return null}
+    const p={name:$('#astroFirstName')?.value.trim()||client.name||'',birth:$('#astroBirthDate')?.value||'',time:$('#astroBirthTime')?.value||'',place:$('#astroBirthPlace')?.value.trim()||''};
+    if(!p.name){notify('Вкажи ім’я');return null}
+    if(!p.birth){notify('Вкажи дату народження');return null}
+    const {data,error}=await sb.from('clients').update({name:p.name,birth:p.birth,birth_time:p.time||null,birth_place:p.place||null}).eq('id',client.id).select('*').single();
+    if(error){console.error(error);notify('Не вдалося зберегти дані');return null}
+    Object.assign(client,data||{});if($('#clientCabinetName'))$('#clientCabinetName').textContent=client.name;if(typeof renderClients==='function')renderClients();notify('Дані збережено у профілі');return p
+  }
   function renderProfile(p,quiet=false){
-    const s=signFromDate(p.birth);if(!s){if(!quiet&&window.toast)window.toast('Вкажи дату народження');else if(!quiet)alert('Вкажи дату народження');return}
+    const s=signFromDate(p.birth);if(!s){if(!quiet)notify('Вкажи дату народження');return}
     const name=p.name?`, ${esc(p.name)}`:'';
     $('#astroProfile').innerHTML=`<div class="astro-sign-row"><div class="astro-sign-symbol">${s.symbol}</div><div><small>ТВОЄ СОНЦЕ</small><b>${s.name}${name}</b><small>${s.element} • ${s.mode}</small></div></div><p>${s.text}</p><div class="astro-profile-points"><div><small>ТВОЯ СИЛА</small><b>${s.gift}</b></div><div><small>ЩО ВАРТО ПОМІЧАТИ</small><b>${s.shadow}</b></div><div><small>ПЕРШИЙ ШАР</small><b>Сонячний знак — не вся натальна карта</b></div></div>`;
     $('#astroProfile').classList.add('show');
@@ -122,18 +132,19 @@
     $('#guidanceTitle').textContent=`Для ${s.name} сьогодні`;$('#guidanceText').textContent=guidance[s.name];
     $('#mysteryCopy').textContent=`Твоє Сонце в ${s.name} уже впізнаване. Але Місяць, Асцендент, Венера, Марс і будинки можуть суттєво змінити історію — саме тому люди з одним знаком бувають такими різними.`;
   }
-  try{const p=JSON.parse(localStorage.getItem(PROFILE_KEY)||'null');if(p){$('#astroFirstName').value=p.name||'';$('#astroBirthDate').value=p.birth||'';$('#astroBirthTime').value=p.time||'';$('#astroBirthPlace').value=p.place||'';if(p.birth)renderProfile(p,true)}}catch{}
-  $('#revealAstroProfile')?.addEventListener('click',()=>renderProfile(saveProfile()));
+  $('#revealAstroProfile')?.addEventListener('click',async()=>{const p=await saveProfile();if(p)renderProfile(p)});
 
   const gate=$('#clientAuthGate');
   const logout=$('#logoutBtn');
   const head=$('.dashboard-head',clientView);
   if(head)head.classList.remove('supabase-private');
+  let loadedClientId=null;
   const syncVisibility=()=>{
-    const signedIn=!!logout&&!logout.hidden;
-    section.hidden=!signedIn;
-    if(head)head.hidden=!signedIn;
-    if(signedIn&&gate&&!gate.hidden)gate.hidden=true;
+    const signedIn=!!logout&&!logout.hidden,client=currentClient(),ready=signedIn&&!!client;
+    section.hidden=!ready;
+    if(head)head.hidden=!ready;
+    if(ready&&gate&&!gate.hidden)gate.hidden=true;
+    if(ready&&client.id!==loadedClientId){loadedClientId=client.id;fillProfile(client)}
   };
   syncVisibility();
   if(logout)new MutationObserver(syncVisibility).observe(logout,{attributes:true,attributeFilter:['hidden']});
