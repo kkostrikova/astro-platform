@@ -117,7 +117,7 @@
       <div class="shell cabinet-summary" aria-label="Огляд кабінету">
         <div><span class="material-symbols-rounded" aria-hidden="true">folder_open</span><p><b id="clientMaterialCount">0</b><small>матеріалів</small></p></div>
         <div><span class="material-symbols-rounded" aria-hidden="true">history</span><p><b id="clientConsultationCount">0</b><small>консультацій в архіві</small></p></div>
-        <div class="cabinet-summary-note"><span class="material-symbols-rounded" aria-hidden="true">verified_user</span><p><b>Особистий архів</b><small>Доступний у цьому браузері</small></p></div>
+        <div class="cabinet-summary-note"><span class="material-symbols-rounded" aria-hidden="true">verified_user</span><p><b>Особистий архів</b><small>Захищено персональним входом</small></p></div>
       </div>
       <div class="shell client-grid">
         <article class="glass panel hero-card-card">
@@ -133,7 +133,7 @@
         <article class="glass panel archive-card">
           <div class="panel-title"><div><small>ІСТОРІЯ</small><h3>Архів консультацій</h3></div><span class="material-symbols-rounded panel-title-icon" aria-hidden="true">history</span></div>
           <div class="archive-list" id="clientArchive">
-            <div class="empty-soft">Після консультацій тут з'являться матеріали та нотатки.</div>
+            <div class="empty-soft">Після консультацій тут з'являться матеріали.</div>
           </div>
         </article>
         <article class="glass panel files-card wide">
@@ -150,7 +150,7 @@
         <button class="btn ghost dashboard-contact" data-route="ephemeris">Відкрити ефемериди <span class="material-symbols-rounded" aria-hidden="true">arrow_forward</span></button>
       </div>
       <div class="shell cabinet-summary astrologer-summary" aria-label="Огляд роботи">
-        <div><span class="material-symbols-rounded" aria-hidden="true">group</span><p><b id="astroClientCount">1</b><small>клієнтів у базі</small></p></div>
+        <div><span class="material-symbols-rounded" aria-hidden="true">group</span><p><b id="astroClientCount">0</b><small>клієнтів у базі</small></p></div>
         <div><span class="material-symbols-rounded" aria-hidden="true">cloud_upload</span><p><b id="astroFileCount">0</b><small>файлів клієнта</small></p></div>
         <div class="cabinet-summary-note"><span class="material-symbols-rounded" aria-hidden="true">edit_note</span><p><b>Робочий простір</b><small>Оберіть клієнта і продовжуйте</small></p></div>
       </div>
@@ -159,6 +159,7 @@
           <div class="panel-title"><div><small>БАЗА</small><h3>Мої клієнти</h3></div><button class="icon-btn add-client-btn" id="addClient" aria-label="Додати клієнта" aria-expanded="false"><span class="material-symbols-rounded" aria-hidden="true">person_add</span></button></div>
           <div id="newClientForm" class="new-client-form" hidden>
             <label>Ім’я<input id="newClientName" placeholder="Ім’я клієнта"></label>
+            <label>Email<input id="newClientEmail" type="email" autocomplete="email" placeholder="client@example.com"></label>
             <label>Дата народження<input id="newClientBirth" type="date"></label>
             <button class="btn primary small" id="saveNewClient">Зберегти клієнта</button>
           </div>
@@ -167,14 +168,14 @@
         <section class="glass panel notes-panel">
           <div class="panel-title"><div><small>НОТАТКИ</small><h3>Нотатки про клієнта</h3></div><span class="material-symbols-rounded panel-title-icon" aria-hidden="true">edit_note</span></div>
           <textarea id="clientNotes" placeholder="Що важливо пам’ятати до наступної консультації..."></textarea>
-          <div class="panel-foot"><span id="saveNoteStatus">Зберігається в цьому браузері</span><button class="btn primary small" id="saveNotes">Зберегти нотатку</button></div>
+          <div class="panel-foot"><span id="saveNoteStatus">Зберігається у захищеній базі</span><button class="btn primary small" id="saveNotes">Зберегти нотатку</button></div>
         </section>
         <section class="glass panel upload-panel">
           <div class="panel-title">
             <div><small>ФАЙЛИ</small><h3>Матеріали клієнта</h3><p class="active-client-line">Активний клієнт: <b id="uploadClientName">—</b></p></div>
           </div>
-          <label class="dropzone" for="materialUpload"><span class="material-symbols-rounded upload-icon" aria-hidden="true">upload_file</span><b>Перетягніть або виберіть файли</b><small>PDF, PNG, JPG, MP3, MP4</small><span class="dropzone-action">Обрати файли</span></label>
-          <input id="materialUpload" type="file" multiple accept=".pdf,.png,.jpg,.jpeg,.mp3,.mp4" hidden />
+          <label class="dropzone" for="materialUpload"><span class="material-symbols-rounded upload-icon" aria-hidden="true">upload_file</span><b>Перетягніть або виберіть файли</b><small>PDF, PNG, JPG, WEBP, MP3, MP4 • до 50 MB</small><span class="dropzone-action">Обрати файли</span></label>
+          <input id="materialUpload" type="file" multiple accept=".pdf,.png,.jpg,.jpeg,.webp,.mp3,.mp4" hidden />
           <div class="upload-classify">
             <label>Тип матеріалу<select id="materialType"><option value="general">Інше</option><option value="natal">Натальна карта</option><option value="forecast">Прогноз</option><option value="consultation">Консультація</option></select></label>
           </div>
@@ -198,23 +199,23 @@
     <!-- EPHEMERIS -->
     <section id="view-ephemeris" class="view">
       <div class="shell dashboard-head">
-        <div><div class="eyebrow">ЕФЕМЕРИДИ</div><h2>Ефемериди та ретроградні петлі до 2050 року</h2><p>Пошук працює по вашій власній перевіреній базі. У демо астрономічні дані навмисно не вигадуються.</p></div>
+        <div><div class="eyebrow">ЕФЕМЕРИДИ</div><h2>Ефемериди та ретроградні петлі до 2050 року</h2><p>Приватний робочий інструмент Вікторії. Перевірена база зберігається у Supabase й доступна після входу астролога.</p></div>
         <label class="btn primary file-btn">Імпортувати CSV / JSON<input type="file" id="ephemerisImport" accept=".csv,.json" hidden></label>
       </div>
       <div class="shell ephem-layout">
         <section class="glass panel ephem-panel">
           <div class="search-row"><div class="search-box">⌕<input id="ephemSearch" placeholder="Планета, знак, подія, дата..." /></div><select id="ephemPlanet"><option value="">Усі планети</option></select><select id="ephemYear"><option value="">Усі роки</option></select></div>
-          <div class="ephem-note"><b>Формат:</b> planet, event, start_date, end_date, sign, notes. Дати — YYYY-MM-DD. Можна імпортувати дані до 2050 року.</div>
+          <div class="ephem-note"><b>Формат:</b> planet, event, start_date, end_date, sign, notes. Дати — YYYY-MM-DD. Можна імпортувати перевірені дані до 2050 року.</div>
           <div class="table-wrap">
-            <table><thead><tr><th>Планета</th><th>Подія / стан</th><th>Початок</th><th>Кінець</th><th>Знак</th><th>Нотатки</th></tr></thead><tbody id="ephemBody"><tr><td colspan="6"><div class="empty-state"><span>✦</span><b>База ще не імпортована</b><p>Завантажте CSV або JSON з перевіреними ефемеридами вашої подруги — пошук і фільтри запрацюють одразу.</p></div></td></tr></tbody></table>
+            <table><thead><tr><th>Планета</th><th>Подія / стан</th><th>Початок</th><th>Кінець</th><th>Знак</th><th>Нотатки</th></tr></thead><tbody id="ephemBody"><tr><td colspan="6"><div class="empty-state"><span>✦</span><b>Робочий інструмент астролога</b><p>Ефемериди доступні після входу в кабінет Вікторії.</p></div></td></tr></tbody></table>
           </div>
-          <div class="panel-foot"><span id="ephemCount">0 записів</span><button class="btn ghost small" id="downloadTemplate">Завантажити шаблон CSV</button></div>
+          <div class="panel-foot"><span id="ephemCount">Приватний розділ</span><button class="btn ghost small" id="downloadTemplate">Завантажити шаблон CSV</button></div>
         </section>
       </div>
     </section>
   </main>
 
-  <footer class="shell footer"><span>VIKTORIA ASTROSTAR • demo surprise edition</span><span>Дані консультацій у цій демо-версії зберігаються лише у вашому браузері.</span></footer>
+  <footer class="shell footer"><span>VIKTORIA ASTROSTAR • personal astrology space</span><span>Матеріали клієнтів зберігаються у приватному сховищі Supabase.</span></footer>
 
   <section id="printReport" class="print-report" aria-hidden="true">
     <div class="print-stars"></div><div class="print-orbit"></div>
@@ -225,6 +226,6 @@
   </section>
 
   <div id="toast" class="toast"></div>
-  <script src="app.js?v=20260905-2"></script>
+  <script src="app.js?v=20260905-4"></script>
 </body>
 </html>
