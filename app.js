@@ -47,7 +47,7 @@ function injectAuthUI(){
   const style=document.createElement('style');
   style.id='supabase-auth-style';
   style.textContent=`
-    .auth-gate-wrap{padding-top:1.2rem;padding-bottom:1.2rem}.auth-gate-card{max-width:720px;margin:0 auto;padding:clamp(22px,4vw,42px);text-align:left}.auth-gate-card h3{margin:.25rem 0 .55rem;font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,42px);font-weight:500}.auth-gate-card>p{max-width:620px;color:var(--muted,#736f69);line-height:1.65}.auth-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}.auth-form-grid label{display:grid;gap:7px;font-size:13px}.auth-form-grid input{width:100%}.auth-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.auth-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:14px;font-size:12px;color:var(--muted,#736f69)}.auth-dot{width:7px;height:7px;border-radius:999px;background:currentColor;opacity:.5}.auth-status-good{color:#476a52}.auth-status-wait{color:#8a6a32}.supabase-private[hidden]{display:none!important}#logoutBtn[hidden]{display:none!important}@media(max-width:680px){.auth-form-grid{grid-template-columns:1fr}.auth-gate-card{padding:20px}.auth-actions .btn{flex:1 1 auto}}
+    .auth-gate-wrap{padding-top:1.2rem;padding-bottom:1.2rem}.auth-gate-card{max-width:720px;margin:0 auto;padding:clamp(22px,4vw,42px);text-align:left}.auth-gate-card h3{margin:.25rem 0 .55rem;font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,42px);font-weight:500}.auth-gate-card>p{max-width:620px;color:var(--muted,#736f69);line-height:1.65}.auth-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}.auth-form-grid label{display:grid;gap:7px;font-size:13px}.auth-form-grid input{width:100%}.auth-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.auth-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:14px;font-size:12px;color:var(--muted,#736f69)}.auth-dot{width:7px;height:7px;border-radius:999px;background:currentColor;opacity:.5}.auth-status-good{color:#476a52}.auth-status-wait{color:#8a6a32}.supabase-private[hidden]{display:none!important}#logoutBtn[hidden]{display:none!important}.panel-title-actions{display:flex;align-items:center;gap:8px}.delete-client-btn{color:#9a4d4d}.delete-client-btn:disabled{opacity:.3;cursor:not-allowed}@media(max-width:680px){.auth-form-grid{grid-template-columns:1fr}.auth-gate-card{padding:20px}.auth-actions .btn{flex:1 1 auto}}
   `;
   document.head.appendChild(style);
 
@@ -63,6 +63,12 @@ function injectAuthUI(){
 
   const top=$('.top-actions');
   if(top&&!$('#logoutBtn')){const b=document.createElement('button');b.id='logoutBtn';b.className='btn ghost small';b.textContent='Вийти';b.hidden=true;top.prepend(b);b.addEventListener('click',signOut)}
+
+  const addClientBtn=$('#addClient');
+  if(addClientBtn&&!$('#clientPanelActions')){
+    const group=document.createElement('div');group.id='clientPanelActions';group.className='panel-title-actions';addClientBtn.before(group);group.appendChild(addClientBtn);
+    const del=document.createElement('button');del.id='deleteClient';del.className='icon-btn add-client-btn delete-client-btn';del.type='button';del.title='Видалити активного клієнта';del.setAttribute('aria-label','Видалити активного клієнта');del.innerHTML='<span class="material-symbols-rounded" aria-hidden="true">delete</span>';del.disabled=true;group.appendChild(del);del.addEventListener('click',deleteActiveClient);
+  }
 
   const newClientForm=$('#newClientForm');
   if(newClientForm&&!$('#newClientEmail')){
@@ -128,15 +134,29 @@ async function authSignup(kind){if(!sb)return toast('Підключення ще
 async function signOut(){if(!sb)return;const {error}=await sb.auth.signOut();if(error)return toast(friendlyError(error));toast('Ви вийшли з акаунта');route('home')}
 
 // ---------- clients ----------
-async function loadAllClients(){if(!sb||!currentUser||!isAstrologer)return;const {data,error}=await sb.from('clients').select('*').order('created_at',{ascending:true});if(error){console.error(error);clientsCache=[];return}clientsCache=data||[];const stored=localStorage.getItem(ACTIVE_KEY);activeClientId=clientsCache.some(c=>c.id===stored)?stored:(clientsCache[0]?.id||null);if(activeClientId)localStorage.setItem(ACTIVE_KEY,activeClientId)}
+async function loadAllClients(){if(!sb||!currentUser||!isAstrologer)return;const {data,error}=await sb.from('clients').select('*').order('created_at',{ascending:true});if(error){console.error(error);clientsCache=[];return}clientsCache=data||[];const stored=localStorage.getItem(ACTIVE_KEY);activeClientId=clientsCache.some(c=>c.id===stored)?stored:(clientsCache[0]?.id||null);if(activeClientId)localStorage.setItem(ACTIVE_KEY,activeClientId);else localStorage.removeItem(ACTIVE_KEY)}
 async function loadCurrentClient(){if(!sb||!currentUser)return;const {data,error}=await sb.from('clients').select('*').order('created_at',{ascending:true}).limit(1).maybeSingle();if(error){console.error(error);clientsCache=[];return}clientsCache=data?[data]:[];activeClientId=data?.id||null}
 function getActiveClientId(){return activeClientId||clientsCache[0]?.id||null}
 function getActiveClient(){return clientsCache.find(x=>x.id===getActiveClientId())||clientsCache[0]||null}
 async function setActiveClient(id){if(!isAstrologer||!clientsCache.some(c=>c.id===id))return;activeClientId=id;localStorage.setItem(ACTIVE_KEY,id);renderClients();await refreshClientCabinet();await refreshAstrologerMaterials();await loadActiveNote();const c=getActiveClient();if(c)toast('Активний клієнт: '+c.name)}
 window.setActiveClient=setActiveClient;
-function renderClients(){const box=$('#clientList');if(!box)return;if(!currentUser||!isAstrologer){box.innerHTML='';return}const active=getActiveClientId();box.innerHTML=clientsCache.length?clientsCache.map(c=>`<button class="client-row ${c.id===active?'active':''}" onclick="setActiveClient('${c.id}')"><span class="avatar">${escapeHtml((c.name||'?').slice(0,1).toUpperCase())}</span><span><b>${escapeHtml(c.name)}</b><small>${c.birth?formatDate(c.birth):escapeHtml(c.email)}</small></span></button>`).join(''):'<div class="empty-soft">Клієнтів ще немає. Додайте першого.</div>';if($('#astroClientCount'))$('#astroClientCount').textContent=clientsCache.length}
+function renderClients(){const box=$('#clientList');if(!box)return;if(!currentUser||!isAstrologer){box.innerHTML='';return}const active=getActiveClientId();box.innerHTML=clientsCache.length?clientsCache.map(c=>`<button class="client-row ${c.id===active?'active':''}" onclick="setActiveClient('${c.id}')"><span class="avatar">${escapeHtml((c.name||'?').slice(0,1).toUpperCase())}</span><span><b>${escapeHtml(c.name)}</b><small>${c.birth?formatDate(c.birth):escapeHtml(c.email)}</small></span></button>`).join(''):'<div class="empty-soft">Клієнтів ще немає. Додайте першого.</div>';if($('#astroClientCount'))$('#astroClientCount').textContent=clientsCache.length;const del=$('#deleteClient');if(del)del.disabled=!clientsCache.length}
 $('#addClient')?.addEventListener('click',()=>{if(!isAstrologer)return toast('Потрібен доступ астролога');const form=$('#newClientForm');if(!form)return;form.hidden=!form.hidden;$('#addClient')?.setAttribute('aria-expanded',String(!form.hidden));if(!form.hidden)$('#newClientName')?.focus()});
 $('#saveNewClient')?.addEventListener('click',async()=>{if(!sb||!isAstrologer)return toast('Потрібен доступ астролога');const name=$('#newClientName')?.value.trim(),email=$('#newClientEmail')?.value.trim().toLowerCase(),birth=$('#newClientBirth')?.value||null;if(!name)return toast('Вкажіть ім’я клієнта');if(!email||!email.includes('@'))return toast('Вкажіть email клієнта');const {data,error}=await sb.from('clients').insert({name,email,birth}).select().single();if(error)return toast(friendlyError(error,'Не вдалося додати клієнта'));await loadAllClients();activeClientId=data.id;localStorage.setItem(ACTIVE_KEY,data.id);$('#newClientName').value='';$('#newClientEmail').value='';$('#newClientBirth').value='';$('#newClientForm').hidden=true;$('#addClient')?.setAttribute('aria-expanded','false');updateAccessUI();renderClients();await refreshClientCabinet();await refreshAstrologerMaterials();await loadActiveNote();toast('Клієнта додано')});
+async function deleteActiveClient(){
+  if(!sb||!isAstrologer)return toast('Потрібен доступ астролога');
+  const client=getActiveClient();if(!client)return toast('Немає активного клієнта');
+  const ok=confirm(`Видалити клієнта «${client.name}»?\n\nБудуть видалені його файли, матеріали та нотатки. Цю дію не можна скасувати.`);if(!ok)return;
+  try{
+    const {data:files,error:listError}=await sb.from('materials').select('id,storage_path').eq('client_id',client.id);if(listError)throw listError;
+    const paths=(files||[]).map(x=>x.storage_path).filter(Boolean);
+    for(let i=0;i<paths.length;i+=100){const {error}=await sb.storage.from(STORAGE_BUCKET).remove(paths.slice(i,i+100));if(error)throw error}
+    const {error:materialsError}=await sb.from('materials').delete().eq('client_id',client.id);if(materialsError)throw materialsError;
+    const {error:clientError}=await sb.from('clients').delete().eq('id',client.id);if(clientError)throw clientError;
+    await loadAllClients();updateAccessUI();renderClients();await refreshClientCabinet();await refreshAstrologerMaterials();await loadActiveNote();toast('Клієнта видалено');
+  }catch(err){toast(friendlyError(err,'Не вдалося повністю видалити клієнта'))}
+}
+window.deleteActiveClient=deleteActiveClient;
 
 // ---------- materials ----------
 async function materialsForActiveClient(){const clientId=getActiveClientId();if(!sb||!currentUser||!clientId)return[];const {data,error}=await sb.from('materials').select('*').eq('client_id',clientId).order('created_at',{ascending:false});if(error){console.error(error);toast(friendlyError(error,'Не вдалося завантажити матеріали'));return[]}return data||[]}
@@ -148,7 +168,7 @@ window.downloadMaterial=downloadMaterial;
 async function signedUrl(m,expires=600){if(!m)return null;const {data,error}=await sb.storage.from(STORAGE_BUCKET).createSignedUrl(m.storage_path,expires);if(error){console.error(error);return null}return data?.signedUrl||null}
 
 async function refreshClientCabinet(){
-  updateAccessUI();const client=getActiveClient();if(!currentUser||!client){if($('#clientMaterialCount'))$('#clientMaterialCount').textContent='0';return}
+  updateAccessUI();const client=getActiveClient();if(!currentUser||!client){if($('#clientMaterialCount'))$('#clientMaterialCount').textContent='0';if($('#clientConsultationCount'))$('#clientConsultationCount').textContent='0';if($('#clientFileGrid'))$('#clientFileGrid').innerHTML='<div class="empty-soft">Поки що тут порожньо.</div>';bindFeatured(null,'natal');bindFeatured(null,'forecast');return}
   if($('#clientCabinetName'))$('#clientCabinetName').textContent=client.name;
   const rows=await materialsForActiveClient();if($('#clientMaterialCount'))$('#clientMaterialCount').textContent=rows.length;
   const grid=$('#clientFileGrid');if(grid){const visibleRows=clientMaterialFilter==='all'?rows:rows.filter(x=>x.type===clientMaterialFilter);grid.innerHTML=visibleRows.length?visibleRows.map(m=>`<article class="file-card"><div><small>${labelType(m.type)}</small><b title="${escapeHtml(m.name)}">${escapeHtml(m.name)}</b><small>${fmtSize(m.size)}</small></div><div class="material-actions"><button class="btn ghost small icon-action" onclick="downloadMaterial('${m.id}')" aria-label="Завантажити ${escapeHtml(m.name)}"><span class="material-symbols-rounded" aria-hidden="true">download</span></button></div></article>`).join(''):`<div class="empty-soft">${rows.length?'У цій категорії матеріалів поки немає.':'Поки що тут порожньо. Астролог додасть матеріали у ваш кабінет.'}</div>`}
