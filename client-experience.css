@@ -42,5 +42,7 @@
 .client-section-label{grid-column:1/-1;margin:6px 0 -2px;font-size:10px;letter-spacing:.23em;color:var(--antique-gold);font-weight:700}
 /* When the session already exists, the auth form must disappear completely. */
 .auth-form-grid[hidden],.auth-actions[hidden]{display:none!important}
+/* Ephemerides are intentionally removed from the product UI. */
+[data-route="ephemeris"],#view-ephemeris{display:none!important}
 @media(max-width:900px){.discovery-grid{grid-template-columns:1fr}.discovery-side{grid-template-columns:1fr 1fr}.mystery-cta{grid-template-columns:1fr}.mystery-cta .cta-box{border-left:0;border-top:1px solid rgba(232,195,125,.32);padding:20px 0 0}}
 @media(max-width:700px){.client-discovery{padding-bottom:18px}.discovery-card{border-radius:16px;padding:20px}.discovery-form{grid-template-columns:1fr}.discovery-form .wide{grid-column:auto}.astro-profile-points{grid-template-columns:1fr}.discovery-side{grid-template-columns:1fr}.mystery-cta{padding:23px 20px}.mystery-cta h3{font-size:31px}.mystery-cta .mystery-list{grid-template-columns:1fr}.tarot-card-day{min-height:220px}}
