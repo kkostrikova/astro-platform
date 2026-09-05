@@ -13,7 +13,7 @@
 
   const section=document.createElement('section');
   section.id='clientDiscovery';
-  section.className='shell client-discovery supabase-private';
+  section.className='shell client-discovery';
   section.hidden=true;
   section.innerHTML=`
     <div class="discovery-grid">
@@ -126,7 +126,16 @@
   $('#revealAstroProfile')?.addEventListener('click',()=>renderProfile(saveProfile()));
 
   const gate=$('#clientAuthGate');
-  const syncVisibility=()=>{section.hidden=gate?!gate.hidden:false};
+  const logout=$('#logoutBtn');
+  const head=$('.dashboard-head',clientView);
+  if(head)head.classList.remove('supabase-private');
+  const syncVisibility=()=>{
+    const signedIn=!!logout&&!logout.hidden;
+    section.hidden=!signedIn;
+    if(head)head.hidden=!signedIn;
+    if(signedIn&&gate&&!gate.hidden)gate.hidden=true;
+  };
   syncVisibility();
+  if(logout)new MutationObserver(syncVisibility).observe(logout,{attributes:true,attributeFilter:['hidden']});
   if(gate)new MutationObserver(syncVisibility).observe(gate,{attributes:true,attributeFilter:['hidden']});
 })();
