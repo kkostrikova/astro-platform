@@ -30,13 +30,23 @@
         </div>
         <div class="pdf-style-label">Стиль документа</div>
         <div class="pdf-style-picker" role="radiogroup" aria-label="Стиль PDF">
-          <button class="pdf-style-option active" type="button" data-pdf-style="ivory"><span class="style-swatch style-ivory"></span><b>Ivory Gold</b><small>світлий • преміальний</small></button>
-          <button class="pdf-style-option" type="button" data-pdf-style="cosmic"><span class="style-swatch style-cosmic"></span><b>Cosmic Night</b><small>темний • атмосферний</small></button>
-          <button class="pdf-style-option" type="button" data-pdf-style="minimal"><span class="style-swatch style-minimal"></span><b>Minimal</b><small>чистий • редакційний</small></button>
+          <button class="pdf-style-option active" type="button" data-pdf-style="ivory"><span class="style-swatch style-ivory"></span><b>Ivory Gold Frame</b><small>світлий • рамка • елегантний</small></button>
+          <button class="pdf-style-option" type="button" data-pdf-style="cosmic"><span class="style-swatch style-cosmic"></span><b>Cosmic Constellation</b><small>темний • сузір’я • атмосферний</small></button>
+          <button class="pdf-style-option" type="button" data-pdf-style="zodiac"><span class="style-swatch style-zodiac"></span><b>Luxury Zodiac</b><small>преміальний • орнаменти • зодіак</small></button>
+        </div>
+        <div class="pdf-delivery-row">
+          <label>Додати клієнту як
+            <select id="pdfStudioMaterialType">
+              <option value="forecast">Прогноз</option>
+              <option value="consultation">Матеріал консультації</option>
+              <option value="general">Інший матеріал</option>
+            </select>
+          </label>
         </div>
         <div class="pdf-studio-actions">
           <button class="btn ghost" id="pdfStudioPreviewBtn" type="button"><span class="material-symbols-rounded" aria-hidden="true">visibility</span> Оновити прев’ю</button>
-          <button class="btn primary" id="pdfStudioDownloadBtn" type="button"><span class="material-symbols-rounded" aria-hidden="true">download</span> Завантажити PDF</button>
+          <button class="btn ghost" id="pdfStudioDownloadBtn" type="button"><span class="material-symbols-rounded" aria-hidden="true">download</span> Завантажити PDF</button>
+          <button class="btn primary" id="pdfStudioSaveClientBtn" type="button"><span class="material-symbols-rounded" aria-hidden="true">cloud_upload</span> Створити й додати клієнту</button>
         </div>
         <div class="pdf-studio-hint">Активний клієнт: <b id="pdfStudioClientName">—</b>. Ім’я автоматично потрапить на титульну сторінку.</div>
       </div>
@@ -83,15 +93,25 @@
     const name=clientName();
     const date=new Date().toLocaleDateString('uk-UA');
     return `
-      <div class="pdf-cover-mark" aria-hidden="true">✦</div>
+      <div class="pdf-decor-layer" aria-hidden="true">
+        <div class="pdf-frame pdf-frame-outer"></div>
+        <div class="pdf-frame pdf-frame-inner"></div>
+        <div class="pdf-corner corner-tl">✦</div>
+        <div class="pdf-corner corner-tr">☾</div>
+        <div class="pdf-corner corner-bl">☉</div>
+        <div class="pdf-corner corner-br">✦</div>
+        <div class="pdf-zodiac-cloud">♈ ♉ ♊ ♋ ♌ ♍ ♎ ♏ ♐ ♑ ♒ ♓</div>
+        <div class="pdf-orbit-mark"></div>
+      </div>
       <header class="pdf-brand"><span class="pdf-monogram">VA</span><div><b>VIKTORIA ASTROSTAR</b><small>персональна астрологія</small></div></header>
       <section class="pdf-cover">
         <div class="pdf-kicker">ПЕРСОНАЛЬНО ДЛЯ ВАС</div>
         <h1>${esc(title)}</h1>
         <div class="pdf-client">${esc(name)}</div>
         ${period?`<div class="pdf-period">${esc(period)}</div>`:''}
+        <div class="pdf-cover-symbols">☾ &nbsp; ✦ &nbsp; ☉</div>
       </section>
-      <div class="pdf-divider"><span>✦</span></div>
+      <div class="pdf-divider"><span>✦ ☾ ✦</span></div>
       <main class="pdf-content">${richText(textInput.value)}</main>
       <footer class="pdf-footer"><span>VIKTORIA ASTROSTAR</span><span>${esc(date)}</span></footer>`;
   }
@@ -110,30 +130,83 @@
   $('#pdfStudioPreviewBtn')?.addEventListener('click',updatePreview);
   [titleInput,periodInput,textInput].forEach(el=>el?.addEventListener('input',()=>{clearTimeout(window.__pdfPreviewTimer);window.__pdfPreviewTimer=setTimeout(updatePreview,180)}));
 
-  async function downloadPdf(){
-    const text=textInput.value.trim();
-    if(!text){if(typeof toast==='function')toast('Вставте текст розбору');else alert('Вставте текст розбору');return}
-    if(typeof html2pdf!=='function'){if(typeof toast==='function')toast('PDF-модуль ще завантажується. Спробуйте ще раз за секунду.');return}
-    const btn=$('#pdfStudioDownloadBtn');if(btn){btn.disabled=true;btn.dataset.label=btn.innerHTML;btn.innerHTML='<span class="material-symbols-rounded">hourglass_top</span> Створюю PDF…'}
+  function pdfOptions(filename){
+    return {
+      margin:0,
+      filename,
+      image:{type:'jpeg',quality:.98},
+      html2canvas:{scale:2,useCORS:true,backgroundColor:null,letterRendering:true},
+      jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
+      pagebreak:{mode:['css','legacy'],avoid:['h2','h3','.pdf-brand','.pdf-footer']}
+    };
+  }
+  function makeExportDoc(){
     const exportDoc=document.createElement('article');
     exportDoc.className=`pdf-doc theme-${activeStyle} pdf-export-doc`;
     exportDoc.innerHTML=docHtml();
     document.body.appendChild(exportDoc);
+    return exportDoc;
+  }
+  function setBusy(btn,busy,label){
+    if(!btn)return;
+    if(busy){btn.disabled=true;btn.dataset.label=btn.innerHTML;btn.innerHTML=`<span class="material-symbols-rounded">hourglass_top</span> ${label}`}
+    else{btn.disabled=false;btn.innerHTML=btn.dataset.label||label}
+  }
+  function requireText(){
+    if(textInput.value.trim())return true;
+    if(typeof toast==='function')toast('Вставте текст розбору');else alert('Вставте текст розбору');
+    return false;
+  }
+  async function renderPdfBlob(exportDoc,filename){
+    return await html2pdf().set(pdfOptions(filename)).from(exportDoc).outputPdf('blob');
+  }
+
+  async function downloadPdf(){
+    if(!requireText())return;
+    if(typeof html2pdf!=='function'){if(typeof toast==='function')toast('PDF-модуль ще завантажується. Спробуйте ще раз за секунду.');return}
+    const btn=$('#pdfStudioDownloadBtn');setBusy(btn,true,'Створюю PDF…');
+    const exportDoc=makeExportDoc();
     const filename=`${safeFilePart(clientName())}_${safeFilePart(titleInput.value||'astro')}.pdf`;
     try{
-      await html2pdf().set({
-        margin:0,
-        filename,
-        image:{type:'jpeg',quality:.98},
-        html2canvas:{scale:2,useCORS:true,backgroundColor:null,letterRendering:true},
-        jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
-        pagebreak:{mode:['css','legacy'],avoid:['h2','h3','.pdf-brand','.pdf-footer']}
-      }).from(exportDoc).save();
+      await html2pdf().set(pdfOptions(filename)).from(exportDoc).save();
       if(typeof toast==='function')toast('PDF готовий');
     }catch(err){console.error(err);if(typeof toast==='function')toast('Не вдалося створити PDF');else alert('Не вдалося створити PDF')}
-    finally{exportDoc.remove();if(btn){btn.disabled=false;btn.innerHTML=btn.dataset.label||'Завантажити PDF'}}
+    finally{exportDoc.remove();setBusy(btn,false,'Завантажити PDF')}
   }
   $('#pdfStudioDownloadBtn')?.addEventListener('click',downloadPdf);
+
+  async function savePdfToClient(){
+    if(!requireText())return;
+    if(typeof html2pdf!=='function'){if(typeof toast==='function')toast('PDF-модуль ще завантажується. Спробуйте ще раз за секунду.');return}
+    if(typeof sb==='undefined'||!sb||typeof isAstrologer==='undefined'||!isAstrologer){if(typeof toast==='function')toast('Потрібен доступ астролога');return}
+    const client=activeClient();
+    if(!client?.id){if(typeof toast==='function')toast('Оберіть клієнта у списку');return}
+    const btn=$('#pdfStudioSaveClientBtn');setBusy(btn,true,'Додаю клієнту…');
+    const exportDoc=makeExportDoc();
+    const filename=`${safeFilePart(client.name)}_${safeFilePart(titleInput.value||'astro')}.pdf`;
+    let storagePath='';
+    try{
+      const blob=await renderPdfBlob(exportDoc,filename);
+      if(!blob||!blob.size)throw new Error('PDF не створено');
+      if(blob.size>50*1024*1024)throw new Error('PDF перевищує ліміт 50 MB');
+      const uuid=crypto.randomUUID?crypto.randomUUID():`${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      storagePath=`${client.id}/${uuid}-${filename}`;
+      const {error:uploadError}=await sb.storage.from(STORAGE_BUCKET).upload(storagePath,blob,{cacheControl:'3600',upsert:false,contentType:'application/pdf'});
+      if(uploadError)throw uploadError;
+      const type=$('#pdfStudioMaterialType')?.value||'forecast';
+      const {error:dbError}=await sb.from('materials').insert({client_id:client.id,name:filename,type,storage_path:storagePath,mime_type:'application/pdf',size:blob.size});
+      if(dbError){await sb.storage.from(STORAGE_BUCKET).remove([storagePath]);storagePath='';throw dbError}
+      if(typeof refreshClientCabinet==='function')await refreshClientCabinet();
+      if(typeof refreshAstrologerMaterials==='function')await refreshAstrologerMaterials();
+      if(typeof toast==='function')toast(`PDF додано клієнту ${client.name}`);
+    }catch(err){
+      console.error(err);
+      if(storagePath){try{await sb.storage.from(STORAGE_BUCKET).remove([storagePath])}catch{}}
+      if(typeof toast==='function')toast(typeof friendlyError==='function'?friendlyError(err,'Не вдалося додати PDF клієнту'):'Не вдалося додати PDF клієнту');
+      else alert('Не вдалося додати PDF клієнту');
+    }finally{exportDoc.remove();setBusy(btn,false,'Створити й додати клієнту')}
+  }
+  $('#pdfStudioSaveClientBtn')?.addEventListener('click',savePdfToClient);
 
   const nameSource=$('#uploadClientName');
   if(nameSource)new MutationObserver(updatePreview).observe(nameSource,{childList:true,characterData:true,subtree:true});
