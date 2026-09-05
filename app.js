@@ -1,5 +1,6 @@
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const toast=(msg)=>{const t=$('#toast');if(!t)return;t.textContent=msg;t.classList.add('show');clearTimeout(window.__tt);window.__tt=setTimeout(()=>t.classList.remove('show'),2400)};
+let clientMaterialFilter='all';
 
 // ---------- routing ----------
 function route(name){
@@ -13,6 +14,10 @@ function route(name){
   if(name==='ephemeris') renderEphem();
   closeMobileMenu();
 }
+window.addEventListener('hashchange',()=>{
+  const name=(location.hash||'#home').slice(1);
+  if($('#view-'+name)&&!$('#view-'+name).classList.contains('active')) route(name);
+});
 const menuToggle=$('#menuToggle'), mobileNav=$('#mobileNav');
 function closeMobileMenu(){
   mobileNav?.classList.remove('open');
@@ -26,7 +31,6 @@ menuToggle?.addEventListener('click',()=>{
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMobileMenu()});
 $$('[data-route]').forEach(el=>el.addEventListener('click',e=>{e.preventDefault();route(el.dataset.route)}));
-const initial=(location.hash||'#home').slice(1); if($('#view-'+initial)) route(initial);
 
 // ---------- client data ----------
 const CLIENTS_KEY='viktoria-clients';
@@ -67,11 +71,13 @@ function renderClients(){
       <span class="avatar">${escapeHtml((c.name||'?').slice(0,1).toUpperCase())}</span>
       <span><b>${escapeHtml(c.name)}</b><small>${c.birth?formatDate(c.birth):'клієнт'}</small></span>
     </button>`).join('');
+  if($('#astroClientCount')) $('#astroClientCount').textContent=loadClients().length;
 }
 
 $('#addClient')?.addEventListener('click',()=>{
   const form=$('#newClientForm'); if(!form)return;
   form.hidden=!form.hidden;
+  $('#addClient')?.setAttribute('aria-expanded',String(!form.hidden));
   if(!form.hidden) $('#newClientName')?.focus();
 });
 $('#saveNewClient')?.addEventListener('click',()=>{
@@ -82,7 +88,7 @@ $('#saveNewClient')?.addEventListener('click',()=>{
   const id='c-'+Date.now();
   rows.push({id,name,birth,created:Date.now()});
   saveClients(rows); localStorage.setItem(ACTIVE_KEY,id);
-  $('#newClientName').value=''; $('#newClientBirth').value=''; $('#newClientForm').hidden=true;
+  $('#newClientName').value=''; $('#newClientBirth').value=''; $('#newClientForm').hidden=true; $('#addClient')?.setAttribute('aria-expanded','false');
   renderClients(); refreshClientCabinet(); refreshAstrologerMaterials(); refreshAstrologerMaterials(); toast('Клієнта додано');
 });
 
@@ -123,18 +129,21 @@ async function refreshClientCabinet(){
   const client=getActiveClient();
   if($('#clientCabinetName')) $('#clientCabinetName').textContent=client.name;
   let rows=[];try{rows=(await allMaterials()).filter(x=>!x.clientId||x.clientId===client.id)}catch{}
+  if($('#clientMaterialCount')) $('#clientMaterialCount').textContent=rows.length;
   const grid=$('#clientFileGrid');
   if(grid){
-    grid.innerHTML=rows.length?rows.sort((a,b)=>b.created-a.created).map(m=>`
-      <article class="file-card"><div><small>${labelType(m.type)}</small><b title="${escapeHtml(m.name)}">${escapeHtml(m.name)}</b><small>${fmtSize(m.size)}</small></div><div class="material-actions"><button class="btn ghost small" onclick="downloadMaterial(${m.id})">↓</button><button class="btn danger small delete-file-btn" onclick="removeMaterial(${m.id})">Видалити</button></div></article>`).join('')
-      :'<div class="empty-soft">Поки що тут порожньо. Астролог додасть матеріали у ваш кабінет.</div>';
+    const visibleRows=clientMaterialFilter==='all'?rows:rows.filter(x=>x.type===clientMaterialFilter);
+    grid.innerHTML=visibleRows.length?visibleRows.sort((a,b)=>b.created-a.created).map(m=>`
+      <article class="file-card"><div><small>${labelType(m.type)}</small><b title="${escapeHtml(m.name)}">${escapeHtml(m.name)}</b><small>${fmtSize(m.size)}</small></div><div class="material-actions"><button class="btn ghost small icon-action" onclick="downloadMaterial(${m.id})" aria-label="Завантажити ${escapeHtml(m.name)}"><span class="material-symbols-rounded" aria-hidden="true">download</span></button><button class="btn danger small delete-file-btn" onclick="removeMaterial(${m.id})">Видалити</button></div></article>`).join('')
+      :`<div class="empty-soft">${rows.length?'У цій категорії матеріалів поки немає.':'Поки що тут порожньо. Астролог додасть матеріали у ваш кабінет.'}</div>`;
   }
   const natal=rows.filter(x=>x.type==='natal').sort((a,b)=>b.created-a.created)[0];
   const fore=rows.filter(x=>x.type==='forecast').sort((a,b)=>b.created-a.created)[0];
   bindFeatured(natal,'natal');bindFeatured(fore,'forecast');
   const cons=rows.filter(x=>x.type==='consultation').sort((a,b)=>b.created-a.created);
+  if($('#clientConsultationCount')) $('#clientConsultationCount').textContent=cons.length;
   if($('#clientArchive')) $('#clientArchive').innerHTML=cons.length?cons.map(m=>`
-    <div class="file-card"><b>${escapeHtml(m.name)}</b><small>${new Date(m.created).toLocaleDateString('uk-UA')} • ${fmtSize(m.size)}</small><div class="material-actions"><button class="btn ghost small" onclick="downloadMaterial(${m.id})">Завантажити</button><button class="btn danger small" onclick="removeMaterial(${m.id})">Видалити</button></div></div>`).join('')
+    <div class="file-card"><b>${escapeHtml(m.name)}</b><small>${new Date(m.created).toLocaleDateString('uk-UA')} • ${fmtSize(m.size)}</small><div class="material-actions"><button class="btn ghost small" onclick="downloadMaterial(${m.id})"><span class="material-symbols-rounded" aria-hidden="true">download</span> Завантажити</button><button class="btn danger small" onclick="removeMaterial(${m.id})">Видалити</button></div></div>`).join('')
     :'<div class="empty-soft">Після консультацій тут з\'являться матеріали та нотатки.</div>';
   loadActiveNote();
 }
@@ -148,6 +157,7 @@ async function refreshAstrologerMaterials(){
   try{rows=(await allMaterials()).filter(x=>x.clientId===client.id)}catch{}
   rows.sort((a,b)=>b.created-a.created);
   if($('#astrologerMaterialCount')) $('#astrologerMaterialCount').textContent=rows.length+' '+(rows.length===1?'файл':'файлів');
+  if($('#astroFileCount')) $('#astroFileCount').textContent=rows.length;
   list.innerHTML=rows.length?rows.map(m=>`
     <article class="astrologer-material-row">
       <div class="material-file-icon">${fileIcon(m.name)}</div>
@@ -155,10 +165,16 @@ async function refreshAstrologerMaterials(){
         <b title="${escapeHtml(m.name)}">${escapeHtml(m.name)}</b>
         <small>${labelType(m.type)} • ${fmtSize(m.size)} • ${new Date(m.created).toLocaleDateString('uk-UA')}</small>
       </div>
-      <div class="material-actions"><button class="btn ghost small" onclick="downloadMaterial(${m.id})" title="Завантажити">↓</button><button class="btn danger small delete-file-btn" onclick="removeMaterial(${m.id})" title="Видалити файл">Видалити</button></div>
+      <div class="material-actions"><button class="btn ghost small icon-action" onclick="downloadMaterial(${m.id})" title="Завантажити" aria-label="Завантажити ${escapeHtml(m.name)}"><span class="material-symbols-rounded" aria-hidden="true">download</span></button><button class="btn danger small delete-file-btn" onclick="removeMaterial(${m.id})" title="Видалити файл">Видалити</button></div>
     </article>`).join('')
     :'<div class="empty-soft">Для цього клієнта файлів ще немає.</div>';
 }
+
+$$('[data-material-filter]').forEach(btn=>btn.addEventListener('click',()=>{
+  clientMaterialFilter=btn.dataset.materialFilter;
+  $$('[data-material-filter]').forEach(x=>x.classList.toggle('active',x===btn));
+  refreshClientCabinet();
+}));
 function fileIcon(name=''){
   const ext=String(name).split('.').pop().toLowerCase();
   if(ext==='pdf')return 'PDF';
@@ -298,3 +314,5 @@ $('#downloadTemplate')?.addEventListener('click',()=>{
 });
 
 renderClients(); refreshClientCabinet();
+const initial=(location.hash||'#home').slice(1);
+if($('#view-'+initial)) route(initial);

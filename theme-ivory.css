@@ -75,7 +75,13 @@ body{
 .luxury-about h2,.luxury-cabinet h2{font:500 clamp(48px,6vw,82px)/.95 "Cormorant Garamond",Georgia,serif;color:var(--aubergine)}
 .luxury-about h2 em,.luxury-cabinet h2 em{color:var(--antique-gold)}
 .luxury-about p,.luxury-cabinet p{color:var(--ink-soft);font-size:16px}
-.luxury-text-link{color:var(--aubergine);border-bottom:1px solid var(--antique-gold);padding-bottom:5px}
+.luxury-about-statement{max-width:1050px;margin-top:34px;padding:34px 38px;border-left:4px solid #d0aa68;background:var(--aubergine-2);box-shadow:0 18px 45px rgba(60,26,48,.12)}
+.luxury-about-statement p{margin:0;max-width:900px;font-size:18px;line-height:1.72;color:#eadde3}
+.luxury-about-statement p strong{display:block;margin-bottom:9px;font:500 29px/1.2 "Cormorant Garamond",Georgia,serif;color:#fff8ee}
+.luxury-about-statement p span{display:block;color:#e5d6de}
+.luxury-text-link{display:inline-flex;align-items:center;gap:8px;margin-top:24px;padding:10px 15px;border:1px solid rgba(232,195,125,.58);border-radius:999px;color:#fff8ee;font-size:13px;font-weight:700;text-decoration:none;background:transparent}
+.luxury-text-link:hover{border-color:#e8c37d;background:rgba(255,248,238,.08)}
+.luxury-text-link .material-symbols-rounded{font-size:17px;color:#e8c37d}
 .luxury-about-mark{display:none}
 .luxury-cabinet{border-color:var(--ivory-line);padding:90px 0 76px}
 .luxury-footer-line{border-color:var(--ivory-line);color:#8c7768}
@@ -157,6 +163,10 @@ td{color:var(--aubergine)}
   .luxury-about{padding:58px 0}
   .luxury-about h2,.luxury-cabinet h2{font-size:48px;line-height:.94}
   .luxury-about p,.luxury-cabinet p{font-size:14px}
+  .luxury-about-statement{margin-top:26px;padding:22px 20px;border-left-width:2px}
+  .luxury-about-statement p{font-size:15px;line-height:1.66}
+  .luxury-about-statement p strong{font-size:23px;line-height:1.18;margin-bottom:9px}
+  .luxury-text-link{margin-top:18px}
   .luxury-cabinet{grid-template-columns:1fr;padding:58px 0 50px}
   .luxury-cabinet .btn{width:100%}
 
@@ -166,3 +176,196 @@ td{color:var(--aubergine)}
 }
 
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+
+/* Cabinet redesign — calm editorial workspace */
+#view-client,#view-astrologer{
+  background-color:var(--ivory-soft);
+  background-image:url("assets/ivory-zodiac-bg.webp");
+  background-repeat:no-repeat;
+  background-position:right -330px top -90px;
+  background-size:760px auto;
+}
+#view-client .dashboard-head,#view-astrologer .dashboard-head{
+  align-items:flex-end;
+  gap:28px;
+  padding:66px 0 24px;
+}
+#view-client .dashboard-head h2,#view-astrologer .dashboard-head h2{
+  margin:0 0 10px;
+  font:500 clamp(50px,5.4vw,74px)/.94 "Cormorant Garamond",Georgia,serif;
+  letter-spacing:-.035em;
+  color:var(--aubergine);
+}
+#view-client .dashboard-head p,#view-astrologer .dashboard-head p{font-size:14px;line-height:1.65}
+.dashboard-contact{display:inline-flex;align-items:center;justify-content:center;gap:9px;white-space:nowrap;text-decoration:none}
+
+.cabinet-summary{
+  display:grid;
+  grid-template-columns:1fr 1fr 1.35fr;
+  border-top:1px solid var(--ivory-line);
+  border-bottom:1px solid var(--ivory-line);
+  margin-bottom:22px;
+}
+.cabinet-summary>div{display:flex;align-items:center;gap:13px;min-height:82px;padding:16px 24px;border-right:1px solid var(--ivory-line)}
+.cabinet-summary>div:first-child{padding-left:0}
+.cabinet-summary>div:last-child{border-right:0}
+.cabinet-summary .material-symbols-rounded{color:var(--antique-gold);font-size:25px}
+.cabinet-summary p{display:flex;flex-direction:column;margin:0}
+.cabinet-summary b{font:600 22px/1.1 "Cormorant Garamond",Georgia,serif;color:var(--aubergine)}
+.cabinet-summary small{margin-top:4px;color:#806e79;font-size:10px;letter-spacing:.045em}
+.cabinet-summary-note{justify-content:flex-end}
+
+#view-client .client-grid{grid-template-columns:1.12fr .88fr .82fr;gap:18px;padding-bottom:84px}
+#view-astrologer .astro-grid{grid-template-columns:270px minmax(0,1fr) minmax(330px,1.05fr);gap:18px;padding-bottom:84px}
+#view-client .panel,#view-astrologer .panel{
+  background:rgba(255,252,247,.88)!important;
+  border:1px solid rgba(118,78,53,.18)!important;
+  border-radius:20px!important;
+  padding:24px;
+  box-shadow:0 16px 44px rgba(64,33,51,.055)!important;
+  color:var(--aubergine);
+}
+#view-client .panel-title,#view-astrologer .panel-title{margin-bottom:18px;align-items:flex-start}
+#view-client .panel-title h3,#view-astrologer .panel-title h3{
+  margin-top:5px;
+  font:500 27px/1.05 "Cormorant Garamond",Georgia,serif;
+  color:var(--aubergine);
+}
+#view-client .panel-title small,#view-astrologer .panel-title small{font-size:9px;letter-spacing:.19em;font-weight:700}
+.panel-title-icon{color:var(--antique-gold);font-size:25px}
+#view-client .tag,#view-astrologer .tag{
+  display:inline-flex;align-items:center;gap:4px;border-color:var(--ivory-line);border-radius:999px;color:var(--antique-gold);background:#fffaf3;padding:6px 9px
+}
+#view-client .tag .material-symbols-rounded,#view-astrologer .tag .material-symbols-rounded{font-size:14px}
+
+#view-client .natal-preview{
+  height:286px;
+  border:1px solid rgba(170,130,71,.24);
+  border-radius:14px;
+  background-color:#f1e5d5;
+  background-image:url("assets/ivory-zodiac-bg.webp");
+  background-position:center;
+  background-size:520px auto;
+  box-shadow:none;
+}
+#view-client .natal-placeholder{color:var(--aubergine);background:rgba(246,239,229,.7)}
+#view-client .natal-placeholder b{font:500 25px/1.1 "Cormorant Garamond",Georgia,serif}
+#view-client .natal-placeholder small{color:#786570}
+.preview-symbol{font-size:54px!important;color:var(--antique-gold)}
+#view-client .forecast-cover{
+  height:286px;
+  border-radius:14px;
+  border:0;
+  background-color:#3f1932;
+  background-image:url("assets/ivory-zodiac-bg.webp");
+  background-position:right -170px top -45px;
+  background-size:520px auto;
+  background-blend-mode:soft-light;
+  padding:28px;
+  color:#fff8ee;
+}
+#view-client .forecast-cover:before,#view-client .forecast-cover i{display:none}
+#view-client .forecast-cover span{color:#d7b778;font-weight:700}
+#view-client .forecast-cover b{font:500 38px/.98 "Cormorant Garamond",Georgia,serif;color:#fff8ee}
+#view-client .forecast-cover small{margin-top:18px;color:rgba(255,248,238,.62);font-size:8px;letter-spacing:.2em}
+
+#view-client .panel-foot,#view-astrologer .panel-foot{border-color:var(--ivory-line);color:#806e79;line-height:1.45}
+#view-client .empty-soft,#view-astrologer .empty-soft{
+  min-height:112px;display:grid;place-items:center;padding:24px;
+  background:rgba(246,239,229,.54)!important;border:1px dashed rgba(170,130,71,.3)!important;border-radius:12px;color:#806e79
+}
+#view-client .archive-list{min-height:286px}
+#view-client .file-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+#view-client .file-card{
+  min-height:128px;background:#fffaf4!important;border:1px solid var(--ivory-line)!important;border-radius:12px;padding:15px
+}
+#view-client .file-card b{color:var(--aubergine)}
+#view-client .file-card small{color:#87747f}
+.materials-heading{align-items:center!important}
+#view-client .segmented{padding:4px;border:1px solid var(--ivory-line);border-radius:12px;background:rgba(246,239,229,.5)}
+#view-client .segmented button{border-radius:8px;color:#816d79;background:transparent}
+#view-client .segmented button.active{background:var(--aubergine-2);color:#fff8ee}
+
+#view-astrologer .clients-panel{grid-row:span 2}
+#view-astrologer .client-row{
+  width:100%;padding:11px;background:transparent!important;border:1px solid transparent!important;border-radius:12px;color:var(--aubergine)
+}
+#view-astrologer .client-row.active,#view-astrologer .client-row:hover{background:#f4eadf!important;border-color:var(--ivory-line)!important}
+#view-astrologer .client-row .avatar{background:var(--aubergine-2);color:#fff8ee}
+#view-astrologer .client-row small{color:#887580}
+.add-client-btn{width:42px;height:42px;border-color:var(--ivory-line);color:var(--aubergine)}
+.new-client-form{display:grid;gap:10px;margin:0 0 16px;padding:14px;border:1px solid var(--ivory-line);border-radius:14px;background:#f7eee4}
+.new-client-form[hidden]{display:none!important}
+.new-client-form label{display:grid;gap:6px;color:#806e79;font-size:10px}
+#view-astrologer .new-client-form input,#view-astrologer .notes-panel textarea,#view-astrologer .upload-classify select,#view-astrologer .builder-grid input,#view-astrologer .builder-grid textarea{
+  width:100%;background:#fffaf4!important;border:1px solid rgba(118,78,53,.2)!important;border-radius:11px!important;color:var(--aubergine)!important;outline:none
+}
+#view-astrologer .new-client-form input{padding:10px}
+#view-astrologer .notes-panel textarea{min-height:208px;padding:16px;line-height:1.65}
+#view-astrologer input:focus,#view-astrologer textarea:focus,#view-astrologer select:focus{border-color:var(--antique-gold)!important;box-shadow:0 0 0 3px rgba(170,130,71,.1)}
+#view-astrologer .dropzone{
+  min-height:190px;background:#f7eee4!important;border:1px dashed rgba(170,130,71,.48)!important;border-radius:14px!important;color:var(--aubergine)
+}
+#view-astrologer .dropzone:hover,#view-astrologer .dropzone.drag{background:#f2e4d5!important;border-color:var(--antique-gold)!important}
+#view-astrologer .upload-icon{font-size:36px;color:var(--antique-gold)}
+.dropzone-action{margin-top:9px;padding:8px 14px;border-radius:9px;background:var(--aubergine-2);color:#fff8ee;font-size:11px;font-weight:700}
+.active-client-line{color:#806e79}.active-client-line b{color:var(--aubergine)}
+.uploaded-materials-head{border-color:var(--ivory-line);color:var(--antique-gold)}
+.uploaded-materials-head small{color:#806e79}
+#view-astrologer .astrologer-material-row{background:#fffaf4;border-color:var(--ivory-line);border-radius:11px}
+#view-astrologer .material-file-icon{border-color:var(--ivory-line);color:var(--antique-gold);border-radius:9px;background:#f7eee4}
+#view-astrologer .material-main b{color:var(--aubergine)}
+#view-astrologer .material-main small{color:#887580}
+#view-astrologer .forecast-builder.wide{grid-column:2/-1}
+#view-astrologer .builder-grid label,#view-astrologer .upload-classify label{color:#806e79}
+#view-astrologer .builder-grid input{padding:12px}
+#view-astrologer .builder-grid textarea{padding:14px;min-height:170px;line-height:1.6}
+
+#view-client .btn,#view-astrologer .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border-radius:11px}
+#view-client .btn.primary,#view-astrologer .btn.primary{background:var(--aubergine-2);border-color:var(--aubergine-2);color:#fff8ee}
+#view-client .btn.ghost,#view-astrologer .btn.ghost{background:transparent;border-color:var(--ivory-line);color:var(--aubergine)}
+#view-client .btn.danger,#view-astrologer .btn.danger{border-color:rgba(151,74,82,.24);color:#8d3c49;background:#fff4f2}
+.icon-action{min-width:38px!important;padding-inline:9px!important}
+.icon-action .material-symbols-rounded{font-size:18px}
+
+@media(max-width:1100px){
+  #view-client .client-grid{grid-template-columns:1fr 1fr}
+  #view-client .archive-card{grid-column:1/-1}
+  #view-astrologer .astro-grid{grid-template-columns:250px 1fr}
+  #view-astrologer .upload-panel{grid-column:2}
+  #view-astrologer .forecast-builder.wide{grid-column:1/-1}
+}
+
+@media(max-width:700px){
+  #view-client,#view-astrologer{background-position:right -480px top -40px;background-size:700px auto}
+  #view-client .dashboard-head,#view-astrologer .dashboard-head{padding:42px 0 20px;gap:18px}
+  #view-client .dashboard-head h2,#view-astrologer .dashboard-head h2{font-size:46px;max-width:340px}
+  #view-client .dashboard-head p,#view-astrologer .dashboard-head p{font-size:13px}
+  .dashboard-contact{width:100%;min-height:50px}
+  .cabinet-summary{grid-template-columns:1fr 1fr;margin-bottom:16px}
+  .cabinet-summary>div{min-height:72px;padding:13px 10px;border-right:0;border-bottom:1px solid var(--ivory-line)}
+  .cabinet-summary>div:nth-child(odd){border-right:1px solid var(--ivory-line)}
+  .cabinet-summary>div:first-child{padding-left:0}
+  .cabinet-summary-note{grid-column:1/-1;justify-content:flex-start;border-right:0!important;border-bottom:0!important;padding-left:0!important}
+  .cabinet-summary b{font-size:19px}.cabinet-summary small{font-size:9px}
+  #view-client .client-grid,#view-astrologer .astro-grid{grid-template-columns:1fr;gap:12px}
+  #view-client .archive-card,#view-astrologer .upload-panel,#view-astrologer .forecast-builder.wide{grid-column:auto}
+  #view-client .panel,#view-astrologer .panel{padding:18px;border-radius:16px!important}
+  #view-client .panel-title h3,#view-astrologer .panel-title h3{font-size:25px}
+  #view-client .natal-preview,#view-client .forecast-cover{height:255px!important}
+  #view-client .archive-list{min-height:auto}
+  #view-client .file-grid{grid-template-columns:1fr}
+  .materials-heading{display:block!important}
+  #view-client .segmented{margin-top:16px;width:100%;display:flex}
+  #view-client .segmented button{flex:1}
+  #view-astrologer .clients-panel{grid-row:auto}
+  #view-astrologer .notes-panel textarea{min-height:170px}
+  #view-astrologer .dropzone{min-height:170px}
+  #view-astrologer .builder-grid{grid-template-columns:1fr}
+  #view-astrologer .builder-grid .full{grid-column:auto}
+  #view-astrologer .panel-foot{align-items:flex-start;flex-direction:column}
+  #view-astrologer .panel-foot .btn{width:100%}
+  #view-astrologer .astrologer-material-row{grid-template-columns:38px 1fr}
+  #view-astrologer .astrologer-material-row .material-actions{grid-column:1/-1;justify-self:stretch}
+  #view-astrologer .astrologer-material-row .delete-file-btn{flex:1}
+}
