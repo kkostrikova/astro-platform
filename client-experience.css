@@ -1,0 +1,44 @@
+/* VIKTORIA ASTROSTAR — personalized client experience */
+.client-discovery{padding:0 0 24px}
+.discovery-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:16px}
+.discovery-card{background:rgba(255,255,255,.58);border:1px solid var(--ivory-line);border-radius:22px;padding:24px;color:var(--aubergine);box-shadow:none}
+.discovery-card h3{font:500 31px/1.05 "Cormorant Garamond",Georgia,serif;margin:4px 0 10px;color:var(--aubergine)}
+.discovery-card p{color:var(--ink-soft);line-height:1.7;margin:0}
+.discovery-kicker{font-size:9px;letter-spacing:.2em;color:var(--antique-gold);font-weight:700}
+.discovery-form{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:10px;margin-top:18px}
+.discovery-form label{display:grid;gap:6px;font-size:11px;color:#806d78}
+.discovery-form input{width:100%;border:1px solid var(--ivory-line);background:rgba(255,255,255,.78);color:var(--aubergine);border-radius:12px;padding:12px 13px;outline:none}
+.discovery-form input:focus{border-color:rgba(170,130,71,.58)}
+.discovery-form .wide{grid-column:1/-1}
+.discovery-form-actions{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap}
+.discovery-note{font-size:11px!important;color:#8a7781!important}
+.astro-profile{display:none;margin-top:20px;padding-top:18px;border-top:1px solid var(--ivory-line)}
+.astro-profile.show{display:block}
+.astro-sign-row{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.astro-sign-symbol{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(170,130,71,.38);font:500 30px/1 "Cormorant Garamond",Georgia,serif;color:var(--antique-gold);background:#fffaf3}
+.astro-sign-row b{display:block;font:600 26px/1 "Cormorant Garamond",Georgia,serif;color:var(--aubergine)}
+.astro-sign-row small{color:#8a7781}
+.astro-profile-points{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:15px 0}
+.astro-profile-points div{padding:12px;border:1px solid var(--ivory-line);border-radius:14px;background:rgba(255,255,255,.42)}
+.astro-profile-points small{display:block;font-size:9px;letter-spacing:.12em;color:var(--antique-gold);margin-bottom:4px}
+.astro-profile-points b{font-size:12px;color:var(--aubergine)}
+.discovery-side{display:grid;gap:16px}
+.tarot-card-day{position:relative;overflow:hidden;min-height:255px;background:linear-gradient(155deg,#32142e,#542441);color:#fff8ee;border:0}
+.tarot-card-day:after{content:"✦";position:absolute;right:-8px;top:-28px;font:500 150px/1 "Cormorant Garamond",serif;color:rgba(232,195,125,.10)}
+.tarot-card-day .discovery-kicker{color:#e8c37d}
+.tarot-card-day h3{color:#fff8ee;margin-top:18px}
+.tarot-card-day p{color:#eadde3;position:relative;z-index:1}
+.tarot-card-name{display:inline-flex;margin-top:16px;padding:7px 10px;border:1px solid rgba(232,195,125,.38);border-radius:999px;color:#f4d79f;font-size:11px;letter-spacing:.08em}
+.daily-guidance{min-height:180px}
+.daily-guidance .guidance-icon{font-size:28px;color:var(--antique-gold);margin-bottom:12px}
+.mystery-cta{grid-column:1/-1;background:var(--aubergine-2);border:0;color:#fff8ee;display:grid;grid-template-columns:1.3fr .7fr;align-items:center;gap:28px;padding:30px 34px}
+.mystery-cta h3{color:#fff8ee;font-size:36px;margin:4px 0 9px}
+.mystery-cta p{color:#eadde3}
+.mystery-cta .mystery-list{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:16px}
+.mystery-cta .mystery-list span{font-size:11px;color:#f1d7a4;border-top:1px solid rgba(232,195,125,.22);padding-top:7px}
+.mystery-cta .cta-box{border-left:1px solid rgba(232,195,125,.32);padding-left:28px}
+.mystery-cta .cta-box small{display:block;color:#d9c4ce;line-height:1.55;margin-bottom:14px}
+.mystery-cta .btn{width:100%;text-decoration:none;background:#f4dfb7!important;border-color:#f4dfb7!important;color:#32142e!important;font-weight:800}
+.client-section-label{grid-column:1/-1;margin:6px 0 -2px;font-size:10px;letter-spacing:.23em;color:var(--antique-gold);font-weight:700}
+@media(max-width:900px){.discovery-grid{grid-template-columns:1fr}.discovery-side{grid-template-columns:1fr 1fr}.mystery-cta{grid-template-columns:1fr}.mystery-cta .cta-box{border-left:0;border-top:1px solid rgba(232,195,125,.32);padding:20px 0 0}}
+@media(max-width:700px){.client-discovery{padding-bottom:18px}.discovery-card{border-radius:16px;padding:20px}.discovery-form{grid-template-columns:1fr}.discovery-form .wide{grid-column:auto}.astro-profile-points{grid-template-columns:1fr}.discovery-side{grid-template-columns:1fr}.mystery-cta{padding:23px 20px}.mystery-cta h3{font-size:31px}.mystery-cta .mystery-list{grid-template-columns:1fr}.tarot-card-day{min-height:220px}}
