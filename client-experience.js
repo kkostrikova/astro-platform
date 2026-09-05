@@ -29,7 +29,7 @@
         </div>
         <div class="discovery-form-actions">
           <button class="btn primary small" id="revealAstroProfile">Показати мій портрет</button>
-          <span class="discovery-note">Точний час і місце знадобляться Віці для повного розбору.</span>
+          <span class="discovery-note">Точний час і місце знадобляться Вікторії для повного розбору.</span>
         </div>
         <div class="astro-profile" id="astroProfile"></div>
       </article>
@@ -57,8 +57,8 @@
           <div class="mystery-list"><span>Місяць — емоційні потреби</span><span>Асцендент — як ти входиш у світ</span><span>Венера — кохання й цінності</span><span>Марс — бажання й спосіб дії</span></div>
         </div>
         <div class="cta-box">
-          <small>Повний розбір починається там, де загальний опис закінчується. Віка збирає карту цілісно — з точним часом, місцем народження й твоїм реальним запитом.</small>
-          <a class="btn primary" href="https://instagram.com/viktoria_astrostar" target="_blank" rel="noopener">Хочу розбір у Віки</a>
+          <small>Повний розбір починається там, де загальний опис закінчується. Вікторія збирає карту цілісно — з точним часом, місцем народження й твоїм реальним запитом.</small>
+          <a class="btn primary" href="https://instagram.com/viktoria_astrostar" target="_blank" rel="noopener">Хочу розбір у Вікторії</a>
         </div>
       </article>
     </div>`;
