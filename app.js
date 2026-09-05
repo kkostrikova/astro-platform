@@ -11,7 +11,20 @@ function route(name){
   if(name==='client') refreshClientCabinet();
   if(name==='astrologer'){renderClients();refreshAstrologerMaterials();}
   if(name==='ephemeris') renderEphem();
+  closeMobileMenu();
 }
+const menuToggle=$('#menuToggle'), mobileNav=$('#mobileNav');
+function closeMobileMenu(){
+  mobileNav?.classList.remove('open');
+  menuToggle?.setAttribute('aria-expanded','false');
+  if(menuToggle) menuToggle.setAttribute('aria-label','Відкрити меню');
+}
+menuToggle?.addEventListener('click',()=>{
+  const open=mobileNav?.classList.toggle('open')||false;
+  menuToggle.setAttribute('aria-expanded',String(open));
+  menuToggle.setAttribute('aria-label',open?'Закрити меню':'Відкрити меню');
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMobileMenu()});
 $$('[data-route]').forEach(el=>el.addEventListener('click',e=>{e.preventDefault();route(el.dataset.route)}));
 const initial=(location.hash||'#home').slice(1); if($('#view-'+initial)) route(initial);
 

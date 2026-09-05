@@ -1,0 +1,168 @@
+/* VIKTORIA ASTROSTAR — Modern Astral Journal */
+:root{
+  --ivory:#f6efe5;
+  --ivory-soft:#fbf7f0;
+  --aubergine:#281126;
+  --aubergine-2:#4d213f;
+  --plum:#6e3656;
+  --antique-gold:#aa8247;
+  --ink-soft:#5f4d59;
+  --ivory-line:rgba(118,78,53,.20);
+}
+
+body{
+  background:var(--ivory);
+  color:var(--aubergine);
+  font-family:Manrope,ui-sans-serif,system-ui,sans-serif;
+}
+.space-bg{display:none!important}
+.shell{width:min(1240px,calc(100% - 48px))}
+.material-symbols-rounded{font-size:21px;line-height:1}
+
+.topbar{
+  top:0;width:100%;margin:0;border:0;border-radius:0;padding:17px max(24px,calc((100vw - 1240px)/2));
+  background:rgba(246,239,229,.94);box-shadow:none;border-bottom:1px solid var(--ivory-line);
+  backdrop-filter:blur(18px);color:var(--aubergine)
+}
+.brand{min-width:250px;gap:14px;color:var(--aubergine)}
+.brand-mark{
+  width:48px;height:48px;border:0;border-right:1px solid var(--antique-gold);border-radius:0;
+  color:var(--aubergine);font:500 26px/1 "Cormorant Garamond",Georgia,serif;box-shadow:none;padding-right:14px
+}
+.brand b{font:600 19px/.92 "Cormorant Garamond",Georgia,serif;letter-spacing:.13em;color:var(--aubergine)}
+.brand small{color:#8d745d;font-size:8px;letter-spacing:.2em;margin-top:6px}
+.topbar nav{gap:18px}
+.nav-btn,.icon-btn,.profile-pill{color:var(--aubergine)}
+.nav-btn{font-size:12px;border-radius:0;padding:10px 2px;border-bottom:1px solid transparent}
+.nav-btn:hover,.nav-btn.active{color:var(--aubergine);background:transparent;border-bottom-color:var(--antique-gold)}
+.profile-pill{border:0;border-radius:0;padding:7px 0;background:transparent}
+.profile-pill .avatar{display:none}
+.icon-btn{border-color:var(--ivory-line);border-radius:50%;background:rgba(255,255,255,.3)}
+.menu-toggle{display:none;place-items:center}
+
+.home-luxury{
+  background:var(--ivory-soft);color:var(--aubergine);overflow:hidden;
+  background-image:url("assets/ivory-zodiac-bg.webp");background-repeat:no-repeat;background-position:top right;background-size:min(64vw,850px) auto
+}
+.home-bg-art{display:none}
+.luxury-hero{min-height:720px;display:block;padding:94px 0 76px}
+.luxury-hero-copy{max-width:760px;position:relative;z-index:2}
+.luxury-kicker{font:600 11px/1.4 Manrope,sans-serif;letter-spacing:.32em;color:var(--antique-gold);margin-bottom:52px}
+.luxury-hero-copy h1{
+  max-width:820px;font:500 clamp(70px,8vw,116px)/.82 "Cormorant Garamond",Georgia,serif;
+  letter-spacing:-.045em;color:var(--aubergine);margin:0 0 34px
+}
+.hero-line-one,.luxury-hero-copy h1 em{display:block}
+.luxury-hero-copy h1 em{color:var(--antique-gold);font-style:normal}
+.luxury-hero-copy p{max-width:590px;color:var(--ink-soft);font-size:17px;line-height:1.78;margin:0}
+.luxury-actions{display:flex;align-items:center;gap:22px;margin-top:38px}
+.hero-aside{display:none}
+.home-luxury .btn{min-height:54px;border-radius:12px;padding:14px 22px;display:inline-flex;align-items:center;justify-content:center;gap:14px;text-decoration:none}
+.home-luxury .btn.primary{background:#471a36;border-color:#471a36;color:#fff8ee;font:600 18px/1.2 "Cormorant Garamond",Georgia,serif;min-width:285px}
+.home-luxury .btn.ghost{background:transparent;border:0;border-bottom:1px solid var(--aubergine);border-radius:0;color:var(--aubergine);padding-inline:2px;min-height:42px}
+.luxury-portrait-panel{display:none}
+
+.luxury-services{padding:70px 0 90px;border-top:1px solid var(--ivory-line)}
+.luxury-section-title{font:600 11px/1.4 Manrope,sans-serif;color:var(--antique-gold);letter-spacing:.3em;margin-bottom:34px}
+.luxury-services-row{grid-template-columns:repeat(4,1fr);border-color:var(--ivory-line)}
+.luxury-services-row article{border-color:var(--ivory-line);min-height:220px;padding:28px 28px 34px}
+.luxury-services-row span{color:var(--antique-gold);font-weight:600}
+.luxury-services-row h3{font:500 31px/1.1 "Cormorant Garamond",Georgia,serif;color:var(--aubergine);margin:34px 0 12px}
+.luxury-services-row p{color:var(--ink-soft);font-size:13px;line-height:1.7}
+
+.luxury-about{grid-template-columns:1fr;border-color:var(--ivory-line);padding:92px 0}
+.luxury-about-copy{max-width:900px}
+.luxury-about h2,.luxury-cabinet h2{font:500 clamp(48px,6vw,82px)/.95 "Cormorant Garamond",Georgia,serif;color:var(--aubergine)}
+.luxury-about h2 em,.luxury-cabinet h2 em{color:var(--antique-gold)}
+.luxury-about p,.luxury-cabinet p{color:var(--ink-soft);font-size:16px}
+.luxury-text-link{color:var(--aubergine);border-bottom:1px solid var(--antique-gold);padding-bottom:5px}
+.luxury-about-mark{display:none}
+.luxury-cabinet{border-color:var(--ivory-line);padding:90px 0 76px}
+.luxury-footer-line{border-color:var(--ivory-line);color:#8c7768}
+
+/* Inner working areas inherit the light editorial system. */
+#view-client,#view-astrologer,#view-ephemeris{background:var(--ivory-soft);min-height:calc(100vh - 82px)}
+#view-client .dashboard-head h2,#view-astrologer .dashboard-head h2,#view-ephemeris .dashboard-head h2{font-family:"Cormorant Garamond",Georgia,serif;color:var(--aubergine)}
+#view-client .dashboard-head p,#view-astrologer .dashboard-head p,#view-ephemeris .dashboard-head p{color:var(--ink-soft)}
+.eyebrow{color:var(--antique-gold)}
+#view-client .panel,#view-astrologer .panel,#view-ephemeris .panel{
+  background:rgba(255,255,255,.52);border-color:var(--ivory-line);box-shadow:none;color:var(--aubergine)
+}
+#view-client .panel-title h3,#view-astrologer .panel-title h3,#view-ephemeris .panel-title h3{font-family:"Cormorant Garamond",Georgia,serif;color:var(--aubergine)}
+#view-client .panel-title small,#view-astrologer .panel-title small,#view-ephemeris .panel-title small{color:var(--antique-gold)}
+.empty-soft{color:#806d78;border-color:var(--ivory-line)}
+.panel-foot{color:#806d78;border-color:var(--ivory-line)}
+.client-row{color:var(--aubergine)}
+.client-row.active,.client-row:hover{border-color:var(--ivory-line);background:rgba(170,130,71,.08)}
+.client-row small{color:#85717d}
+.notes-panel textarea,.upload-classify select,.builder-grid input,.builder-grid textarea,.search-row select,.search-box,.search-box input{
+  background:rgba(255,255,255,.7)!important;border-color:var(--ivory-line)!important;color:var(--aubergine)!important
+}
+.dropzone{background:rgba(255,255,255,.34);border-color:rgba(170,130,71,.34)}
+.dropzone small,.upload-classify label,.builder-grid label,.ephem-note{color:#806d78}
+.file-card{background:rgba(255,255,255,.45);border-color:var(--ivory-line)}
+.file-card small{color:#85717d}
+.table-wrap{border-color:var(--ivory-line)}
+th{background:rgba(170,130,71,.08);color:var(--antique-gold)}
+th,td{border-color:var(--ivory-line)}
+td{color:var(--aubergine)}
+.footer{color:#85717d;border-color:var(--ivory-line);background:var(--ivory-soft)}
+.btn.primary,
+#view-client .btn.primary,#view-astrologer .btn.primary,#view-ephemeris .btn.primary{
+  background:var(--aubergine-2);border-color:var(--aubergine-2);color:#fff8ee;box-shadow:none
+}
+.btn.ghost{background:transparent;border-color:var(--ivory-line);color:var(--aubergine)}
+
+@media(max-width:1100px){
+  .menu-toggle{display:grid}
+  .topbar nav{display:none}
+  .mobile-nav{
+    display:none;position:fixed;z-index:49;top:80px;right:12px;left:12px;padding:12px 18px;
+    background:rgba(251,247,240,.98);border:1px solid var(--ivory-line);border-radius:16px;box-shadow:0 20px 45px rgba(51,25,43,.12)
+  }
+  .mobile-nav.open{display:grid}
+  .mobile-nav .nav-btn{text-align:left;padding:15px 4px;color:var(--aubergine);border-bottom:1px solid var(--ivory-line)}
+  .mobile-nav .nav-btn:last-child{border-bottom:0}
+}
+
+@media(max-width:700px){
+  .shell{width:min(100% - 36px,1240px)}
+  .topbar{padding:12px 18px;min-height:72px}
+  .brand{min-width:0;gap:10px}
+  .brand-mark{width:39px;height:39px;padding-right:10px;font-size:21px}
+  .brand b{font-size:16px;letter-spacing:.105em}
+  .brand small{display:none}
+  .profile-pill{display:none}
+  .icon-btn{width:44px;height:44px}
+  .mobile-nav{top:76px}
+
+  .home-luxury{background-size:720px auto;background-position:right -150px top -12px}
+  .luxury-hero{min-height:630px;padding:54px 0 36px}
+  .luxury-kicker{font-size:9px;letter-spacing:.26em;margin-bottom:56px;max-width:190px}
+  .luxury-hero-copy h1{font-size:57px!important;line-height:.85!important;letter-spacing:-.045em;margin-bottom:30px;max-width:350px}
+  .hero-line-one{max-width:245px}
+  .luxury-hero-copy p{font-size:14px;line-height:1.72;max-width:245px}
+  .hero-aside{display:block;position:absolute;right:0;top:348px;color:var(--antique-gold);font:italic 500 13px/1.22 "Cormorant Garamond",Georgia,serif}
+  .luxury-actions{display:grid;gap:13px;margin-top:34px}
+  .home-luxury .btn{width:100%;min-height:58px}
+  .home-luxury .btn.primary{min-width:0}
+  .home-luxury .btn.ghost{width:max-content;justify-self:start;min-height:42px}
+
+  .luxury-services{padding:10px 0 58px}
+  .luxury-section-title{margin-bottom:8px}
+  .luxury-services-row{display:block;border-bottom:0}
+  .luxury-services-row article{min-height:auto;padding:14px 0 22px;border-right:0;border-bottom:1px solid var(--ivory-line)}
+  .luxury-services-row h3{font-size:29px;margin:5px 0 7px}
+  .luxury-services-row p{font-size:13px;max-width:320px}
+  .luxury-about{padding:58px 0}
+  .luxury-about h2,.luxury-cabinet h2{font-size:48px;line-height:.94}
+  .luxury-about p,.luxury-cabinet p{font-size:14px}
+  .luxury-cabinet{grid-template-columns:1fr;padding:58px 0 50px}
+  .luxury-cabinet .btn{width:100%}
+
+  #view-client .dashboard-head,#view-astrologer .dashboard-head,#view-ephemeris .dashboard-head{padding:48px 0 24px}
+  #view-client .dashboard-head h2,#view-astrologer .dashboard-head h2,#view-ephemeris .dashboard-head h2{font-size:45px}
+  .panel{border-radius:16px}
+}
+
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}

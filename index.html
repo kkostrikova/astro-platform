@@ -3,9 +3,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#070814" />
+  <meta name="theme-color" content="#f6efe5" />
   <title>VIKTORIA ASTROSTAR — персональний простір астролога</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600;700&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,300,0,0&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css?v=20260901-2" />
+  <link rel="stylesheet" href="theme-ivory.css?v=20260905-1" />
 </head>
 <body>
   <div class="space-bg" aria-hidden="true">
@@ -19,8 +23,8 @@
 
   <header class="topbar glass">
     <a class="brand" href="#home" data-route="home" aria-label="На головну">
-      <span class="brand-mark">✦</span>
-      <span><b>VIKTORIA ASTROSTAR</b><small>персональний простір астролога</small></span>
+      <span class="brand-mark" aria-hidden="true">VA</span>
+      <span><b>VIKTORIA<br>ASTROSTAR</b><small>персональна астрологія</small></span>
     </a>
     <nav>
       <button data-route="home" class="nav-btn active">Головна</button>
@@ -29,11 +33,11 @@
       <button data-route="ephemeris" class="nav-btn">Ефемериди</button>
     </nav>
     <div class="top-actions">
-      <button class="icon-btn" title="Сповіщення">♡</button>
-      <button class="profile-pill"><span class="avatar">V</span><span>Вікторія</span></button>
+      <button class="profile-pill" data-route="client"><span class="avatar">V</span><span>Кабінет</span></button>
+      <button class="menu-toggle icon-btn" id="menuToggle" type="button" aria-label="Відкрити меню" aria-expanded="false" aria-controls="mobileNav"><span class="material-symbols-rounded" aria-hidden="true">menu</span></button>
     </div>
   </header>
-  <div class="mobile-nav glass">
+  <div class="mobile-nav glass" id="mobileNav" aria-label="Мобільна навігація">
     <button data-route="home" class="nav-btn">Головна</button>
     <button data-route="client" class="nav-btn">Мій кабінет</button>
     <button data-route="astrologer" class="nav-btn">Астролог</button>
@@ -50,12 +54,13 @@
 
       <section class="shell luxury-hero">
         <div class="luxury-hero-copy">
-          <div class="luxury-kicker">VIKTORIA ASTROSTAR</div>
-          <h1>Астрологія<br><em>для ясності, вибору<br>і внутрішньої опори.</em></h1>
-          <p>Натальні карти, персональні прогнози, соляр, таро та індивідуальні консультації.</p>
+          <div class="luxury-kicker">АСТРОЛОГІЯ ДЛЯ РЕАЛЬНОГО ЖИТТЯ</div>
+          <h1><span class="hero-line-one">Бачити ясніше.</span><em>Обирати свідомо.</em></h1>
+          <p>Персональна астрологія для важливих рішень, нових циклів і внутрішньої опори.</p>
+          <div class="hero-aside">Більше<br>усвідомлених<br>життів</div>
           <div class="luxury-actions">
-            <a class="btn primary" href="https://instagram.com/viktoria_astrostar" target="_blank" rel="noopener">Записатися</a>
-            <button class="btn ghost" data-route="client">Кабінет клієнта</button>
+            <a class="btn primary" href="https://instagram.com/viktoria_astrostar" target="_blank" rel="noopener">Записатися на консультацію <span class="material-symbols-rounded" aria-hidden="true">arrow_forward</span></a>
+            <button class="btn ghost" data-route="client">Відкрити кабінет <span class="material-symbols-rounded" aria-hidden="true">arrow_forward</span></button>
           </div>
         </div>
 
@@ -70,7 +75,7 @@
       </section>
 
       <section class="shell luxury-services">
-        <div class="luxury-section-title">Послуги</div>
+        <div class="luxury-section-title">Напрями роботи</div>
         <div class="luxury-services-row">
           <article><span>01</span><h3>Натальна карта</h3><p>Аналіз характеру, потенціалу та ключових життєвих тем.</p></article>
           <article><span>02</span><h3>Прогноз</h3><p>Персональні акценти на обраний період.</p></article>
