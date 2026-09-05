@@ -31,7 +31,7 @@ function route(name){
   window.scrollTo({top:0,behavior:'smooth'});
   if(name==='client') refreshClientCabinet();
   if(name==='astrologer'){renderClients();refreshAstrologerMaterials();loadActiveNote()}
-  if(name==='ephemeris') renderEphem();
+  if(name==='ephemeris') refreshEphemerides();
   closeMobileMenu();
 }
 window.addEventListener('hashchange',()=>{const name=(location.hash||'#home').slice(1);if($('#view-'+name)&&!$('#view-'+name).classList.contains('active'))route(name)});
@@ -118,7 +118,10 @@ async function applySession(session){
     if(isAstrologer)await loadAllClients();else await loadCurrentClient();
   }
   authReady=true;updateAccessUI();
-  const current=(location.hash||'#home').slice(1);if(current==='client')await refreshClientCabinet();if(current==='astrologer'){renderClients();await refreshAstrologerMaterials();await loadActiveNote()}
+  const current=(location.hash||'#home').slice(1);
+  if(current==='client')await refreshClientCabinet();
+  if(current==='astrologer'){renderClients();await refreshAstrologerMaterials();await loadActiveNote()}
+  if(current==='ephemeris')await refreshEphemerides();
 }
 async function authLogin(kind){if(!sb)return toast('Підключення ще ініціалізується');const email=$('#'+kind+'AuthEmail')?.value.trim().toLowerCase(),password=$('#'+kind+'AuthPassword')?.value||'';if(!email||!password)return toast('Вкажіть email і пароль');const {error}=await sb.auth.signInWithPassword({email,password});if(error)return toast(friendlyError(error));toast('Вхід виконано')}
 async function authSignup(kind){if(!sb)return toast('Підключення ще ініціалізується');const email=$('#'+kind+'AuthEmail')?.value.trim().toLowerCase(),password=$('#'+kind+'AuthPassword')?.value||'';if(!email||!password)return toast('Вкажіть email і пароль');if(password.length<8)return toast('Пароль має містити щонайменше 8 символів');const {data,error}=await sb.auth.signUp({email,password});if(error)return toast(friendlyError(error));if(data.session)toast('Акаунт створено і вхід виконано');else toast('Акаунт створено. Підтвердіть email і поверніться на платформу')}
@@ -172,13 +175,74 @@ $('#makePdf')?.addEventListener('click',()=>{const client=getActiveClient();if(!
 let ephem=[];
 const required=['planet','event','start_date','end_date','sign','notes'];
 function normalize(o){const x={};required.forEach(k=>x[k]=String(o[k]??'').trim());return x}
-$('#ephemerisImport')?.addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{const txt=await f.text();let rows;if(f.name.toLowerCase().endsWith('.json')){const parsed=JSON.parse(txt);rows=Array.isArray(parsed)?parsed:(parsed.rows||[])}else rows=parseCSV(txt);ephem=rows.map(normalize).filter(r=>r.planet||r.event||r.start_date);localStorage.setItem('viktoria-ephem',JSON.stringify(ephem));populateFilters();renderEphem();toast('Імпортовано '+ephem.length+' записів')}catch(err){console.error(err);toast('Не вдалося прочитати файл. Перевірте формат.')}});
-function parseCSV(text){const lines=text.replace(/^\uFEFF/,'').split(/\r?\n/).filter(Boolean);if(!lines.length)return[];const parseLine=line=>{const out=[];let cur='',q=false;for(let i=0;i<line.length;i++){const c=line[i];if(c==='\"'){if(q&&line[i+1]==='\"'){cur+='\"';i++}else q=!q}else if(c===','&&!q){out.push(cur);cur=''}else cur+=c}out.push(cur);return out};const head=parseLine(lines[0]).map(x=>x.trim());return lines.slice(1).map(l=>{const vals=parseLine(l),o={};head.forEach((h,i)=>o[h]=vals[i]??'');return o})}
-function populateFilters(){const p=$('#ephemPlanet'),y=$('#ephemYear');if(!p||!y)return;const planets=[...new Set(ephem.map(x=>x.planet).filter(Boolean))].sort();p.innerHTML='<option value="">Усі планети</option>'+planets.map(v=>`<option>${escapeHtml(v)}</option>`).join('');const years=[...new Set(ephem.flatMap(x=>[x.start_date?.slice(0,4),x.end_date?.slice(0,4)]).filter(v=>/^20\d\d$/.test(v)))].sort();y.innerHTML='<option value="">Усі роки</option>'+years.map(v=>`<option>${v}</option>`).join('')}
-function renderEphem(){const body=$('#ephemBody');if(!body)return;const q=($('#ephemSearch')?.value||'').toLowerCase(),p=$('#ephemPlanet')?.value||'',y=$('#ephemYear')?.value||'';const rows=ephem.filter(r=>{const hay=Object.values(r).join(' ').toLowerCase();return(!q||hay.includes(q))&&(!p||r.planet===p)&&(!y||r.start_date.startsWith(y)||r.end_date.startsWith(y))});if($('#ephemCount'))$('#ephemCount').textContent=rows.length+' записів';body.innerHTML=rows.length?rows.map(r=>`<tr><td><b>${escapeHtml(r.planet)}</b></td><td>${escapeHtml(r.event)}</td><td>${escapeHtml(r.start_date)}</td><td>${escapeHtml(r.end_date)}</td><td>${escapeHtml(r.sign)}</td><td>${escapeHtml(r.notes)}</td></tr>`).join(''):`<tr><td colspan="6"><div class="empty-state"><span>✦</span><b>${ephem.length?'Нічого не знайдено':'База ще не імпортована'}</b><p>${ephem.length?'Змініть пошук або фільтри.':'Завантажте CSV або JSON з перевіреними ефемеридами — пошук і фільтри запрацюють одразу.'}</p></div></td></tr>`}
-['#ephemSearch','#ephemPlanet','#ephemYear'].forEach(s=>$(s)?.addEventListener(s==='#ephemSearch'?'input':'change',renderEphem));
-try{ephem=JSON.parse(localStorage.getItem('viktoria-ephem')||'[]')}catch{ephem=[]}
-populateFilters();renderEphem();
+function toDbEphem(r){return {planet:r.planet,event:r.event||'',start_date:r.start_date||null,end_date:r.end_date||null,sign:r.sign||'',notes:r.notes||''}}
+function validateEphemerisRows(rows){
+  if(!rows.length)throw new Error('Файл не містить записів');
+  for(const [i,r] of rows.entries()){
+    if(!r.planet)throw new Error(`Рядок ${i+2}: не вказано planet`);
+    for(const key of ['start_date','end_date']){
+      if(!r[key])continue;
+      if(!/^\d{4}-\d{2}-\d{2}$/.test(r[key]))throw new Error(`Рядок ${i+2}: ${key} має бути у форматі YYYY-MM-DD`);
+      const year=Number(r[key].slice(0,4));
+      if(year>2050)throw new Error(`Рядок ${i+2}: дата пізніше 2050 року`);
+    }
+    if(r.start_date&&r.end_date&&r.end_date<r.start_date)throw new Error(`Рядок ${i+2}: end_date раніше start_date`);
+  }
+}
+async function refreshEphemerides(){
+  const input=$('#ephemerisImport');if(input)input.disabled=!isAstrologer;
+  if(!sb||!currentUser||!isAstrologer){ephem=[];populateFilters();renderEphem(true);return}
+  const {data,error}=await sb.from('ephemerides').select('id,planet,event,start_date,end_date,sign,notes').order('start_date',{ascending:true});
+  if(error){console.error(error);ephem=[];populateFilters();renderEphem(false,'Не вдалося завантажити базу ефемерид');return}
+  ephem=(data||[]).map(normalize);populateFilters();renderEphem();
+}
+async function deleteEphemerisIds(ids){for(let i=0;i<ids.length;i+=300){const {error}=await sb.from('ephemerides').delete().in('id',ids.slice(i,i+300));if(error)throw error}}
+async function replaceEphemerides(rows){
+  const {data:old,error:oldError}=await sb.from('ephemerides').select('id');if(oldError)throw oldError;
+  const oldIds=(old||[]).map(x=>x.id),newIds=[];
+  try{
+    for(let i=0;i<rows.length;i+=300){const chunk=rows.slice(i,i+300).map(toDbEphem);const {data,error}=await sb.from('ephemerides').insert(chunk).select('id');if(error)throw error;newIds.push(...(data||[]).map(x=>x.id))}
+  }catch(err){try{if(newIds.length)await deleteEphemerisIds(newIds)}catch{}throw err}
+  try{if(oldIds.length)await deleteEphemerisIds(oldIds)}catch(err){console.error('Old ephemerides cleanup failed',err);toast('Нову базу імпортовано, але старі записи не вдалося повністю очистити')}
+}
+$('#ephemerisImport')?.addEventListener('change',async e=>{
+  const f=e.target.files[0];if(!f)return;
+  if(!sb||!currentUser||!isAstrologer){e.target.value='';return toast('Імпортувати ефемериди може лише Вікторія')}
+  try{
+    const txt=await f.text();let rows;
+    if(f.name.toLowerCase().endsWith('.json')){const parsed=JSON.parse(txt);rows=Array.isArray(parsed)?parsed:(parsed.rows||[])}else rows=parseCSV(txt);
+    rows=rows.map(normalize).filter(r=>r.planet||r.event||r.start_date||r.end_date||r.sign||r.notes);
+    validateEphemerisRows(rows);
+    await replaceEphemerides(rows);
+    await refreshEphemerides();
+    toast('Імпортовано '+rows.length+' записів у Supabase');
+  }catch(err){console.error(err);toast(friendlyError(err,'Не вдалося імпортувати ефемериди'))}
+  finally{e.target.value=''}
+});
+function parseCSV(text){
+  const lines=text.replace(/^\uFEFF/,'').split(/\r?\n/).filter(Boolean);if(!lines.length)return[];
+  const parseLine=line=>{const out=[];let cur='',q=false;for(let i=0;i<line.length;i++){const c=line[i];if(c==='\"'){if(q&&line[i+1]==='\"'){cur+='\"';i++}else q=!q}else if(c===','&&!q){out.push(cur);cur=''}else cur+=c}out.push(cur);return out};
+  const head=parseLine(lines[0]).map(x=>x.trim());
+  return lines.slice(1).map(l=>{const vals=parseLine(l),o={};head.forEach((h,i)=>o[h]=vals[i]??'');return o})
+}
+function populateFilters(){
+  const p=$('#ephemPlanet'),y=$('#ephemYear');if(!p||!y)return;
+  const planets=[...new Set(ephem.map(x=>x.planet).filter(Boolean))].sort();
+  p.innerHTML='<option value="">Усі планети</option>'+planets.map(v=>`<option>${escapeHtml(v)}</option>`).join('');
+  const years=[...new Set(ephem.flatMap(x=>[x.start_date?.slice(0,4),x.end_date?.slice(0,4)]).filter(v=>/^20\d\d$/.test(v)))].sort();
+  y.innerHTML='<option value="">Усі роки</option>'+years.map(v=>`<option>${v}</option>`).join('')
+}
+function renderEphem(locked=false,errorText=''){
+  const body=$('#ephemBody');if(!body)return;
+  const q=($('#ephemSearch')?.value||'').toLowerCase(),p=$('#ephemPlanet')?.value||'',y=$('#ephemYear')?.value||'';
+  const rows=ephem.filter(r=>{const hay=Object.values(r).join(' ').toLowerCase();return(!q||hay.includes(q))&&(!p||r.planet===p)&&(!y||r.start_date.startsWith(y)||r.end_date.startsWith(y))});
+  if($('#ephemCount'))$('#ephemCount').textContent=locked?'Приватний розділ':rows.length+' записів';
+  if(locked){body.innerHTML='<tr><td colspan="6"><div class="empty-state"><span>✦</span><b>Робочий інструмент астролога</b><p>Ефемериди доступні після входу в кабінет Вікторії.</p></div></td></tr>';return}
+  if(errorText){body.innerHTML=`<tr><td colspan="6"><div class="empty-state"><span>✦</span><b>Помилка завантаження</b><p>${escapeHtml(errorText)}</p></div></td></tr>`;return}
+  body.innerHTML=rows.length?rows.map(r=>`<tr><td><b>${escapeHtml(r.planet)}</b></td><td>${escapeHtml(r.event)}</td><td>${escapeHtml(r.start_date)}</td><td>${escapeHtml(r.end_date)}</td><td>${escapeHtml(r.sign)}</td><td>${escapeHtml(r.notes)}</td></tr>`).join(''):`<tr><td colspan="6"><div class="empty-state"><span>✦</span><b>${ephem.length?'Нічого не знайдено':'База ще не імпортована'}</b><p>${ephem.length?'Змініть пошук або фільтри.':'Вікторія може один раз імпортувати перевірений CSV або JSON — база збережеться у Supabase і буде доступна з різних пристроїв.'}</p></div></td></tr>`
+}
+['#ephemSearch','#ephemPlanet','#ephemYear'].forEach(s=>$(s)?.addEventListener(s==='#ephemSearch'?'input':'change',()=>renderEphem(!isAstrologer)));
+populateFilters();renderEphem(true);
 $('#downloadTemplate')?.addEventListener('click',()=>{const csv='planet,event,start_date,end_date,sign,notes\n',blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ephemerides_template.csv';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),800)});
 
 injectAuthUI();
